@@ -7,4 +7,5 @@ RSpec.describe Answer, type: :model do
     should validate_length_of(:body).
     is_at_least(30)
   end
+  it { should have_db_index(:question_id) }
 end
