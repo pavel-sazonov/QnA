@@ -7,10 +7,10 @@ RSpec.describe Question, type: :model do
   it { should validate_presence_of :body }
   it do
     should validate_length_of(:title).
-    is_at_least(10).is_at_most(50)
+    is_at_least(5).is_at_most(50)
   end
   it do
     should validate_length_of(:body).
-    is_at_least(30)
+    is_at_least(5)
   end
 end
