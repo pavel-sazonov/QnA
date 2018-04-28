@@ -5,3 +5,6 @@ ul.questions
       p= q.body
 
 p= link_to 'Ask question', new_question_path
+
+- if user_signed_in?
+  p= link_to 'Logout', destroy_user_session_path, method: :delete
