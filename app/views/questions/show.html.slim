@@ -14,3 +14,4 @@ ul.answers
   - @question.answers.each do |q|
     li
       p= q.body
+      p= link_to 'Delete answer', answer_path, method: :delete
