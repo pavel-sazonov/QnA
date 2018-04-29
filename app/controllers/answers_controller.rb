@@ -6,19 +6,13 @@ class AnswersController < ApplicationController
     @answers = @question.answers
   end
 
-  def new
-    @answer = @question.answers.new
-  end
-
   def create
     @answer = @question.answers.new(answer_params)
+    @answer.user = current_user
 
-    if @answer.save
-      flash[:notice] = 'Your answer successfully created.'
-      redirect_to question_path(@question)
-    else
-      render :new
-    end
+    flash[:notice] = 'Your answer successfully created.' if @answer.save
+
+    redirect_to @question
   end
 
   private

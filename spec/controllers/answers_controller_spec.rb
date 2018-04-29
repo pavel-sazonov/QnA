@@ -5,7 +5,7 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question, user: user) }
 
   describe 'GET #index' do
-    let(:answers) { create_list(:answer, 2, question: question) }
+    let(:answers) { create_list(:answer, 2, question: question, user: user) }
 
     before { get :index, params: { question_id: question } }
 
@@ -18,25 +18,16 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'GET #new' do
-    before { get :new, params: { question_id: question } }
-
-    it 'assigns new Answer to @answer' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
-    it 'renders new view' do
-      expect(response).to render_template :new
-    end
-  end
-
-  describe 'GET #create' do
+  describe 'POST #create' do
     sign_in_user
 
     context 'valid attributes' do
       it 'saves a new answer in the database' do
-        expect { post :create, params: { answer: attributes_for(:answer), question_id: question } }.
-        to change(question.answers, :count).by(1)
+        expect { post :create, params: {
+          answer: attributes_for(:answer),
+          question_id: question,
+          user_id: @user
+          } }.to change(question.answers, :count).by(1)
       end
 
       it "redirect to question's show view" do
@@ -49,11 +40,6 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not save a new answer in the database' do
         expect { post :create, params: { answer: attributes_for(:invalid_answer), question_id: question } }.
         to_not change(Answer, :count)
-      end
-
-      it 're-renders new view' do
-        post :create, params: { answer: attributes_for(:invalid_answer), question_id: question }
-        expect(response).to render_template :new
       end
     end
   end
