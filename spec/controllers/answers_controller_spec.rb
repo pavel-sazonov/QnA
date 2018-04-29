@@ -1,26 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:user) { create(:user) }
-  let(:question) { create(:question, user: user) }
-
-  describe 'GET #index' do
-    let(:answers) { create_list(:answer, 2, question: question, user: user) }
-
-    before { get :index, params: { question_id: question } }
-
-    it 'populates an array from all answers' do
-      expect(assigns(:answers)).to match_array(answers)
-    end
-
-    it 'renders index view' do
-      expect(response).to render_template :index
-    end
-  end
+  sign_in_user
+  let(:question) { create(:question, user: @user) }
 
   describe 'POST #create' do
-    sign_in_user
-
     context 'valid attributes' do
       it 'saves a new answer in the database' do
         expect { post :create, params: {

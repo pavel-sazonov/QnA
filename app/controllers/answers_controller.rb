@@ -2,10 +2,6 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, only: %i[create]
   before_action :find_question, only: %i[index new create]
 
-  def index
-    @answers = @question.answers
-  end
-
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
