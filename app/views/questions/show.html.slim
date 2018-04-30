@@ -2,16 +2,23 @@ p= @question.title
 p= @question.body
 
 - if current_user && current_user.author_of?(@question)
-  p= link_to 'Delete question', question_path, method: :delete
+    p= link_to 'Delete question',
+               question_path(@question),
+               method: :delete,
+               data: { confirm: 'Are you sure?' }
 
 
 = form_for [@question, @answer] do |f|
-  = f.label :body
-  = f.text_area :body
-  = f.submit 'Create'
+  p= f.label :body
+  p= f.text_area :body
+  p= f.submit 'Create'
 
 ul.answers
-  - @question.answers.each do |q|
-    li
-      p= q.body
-      p= link_to 'Delete answer', answer_path, method: :delete
+  - @question.answers.each do |a|
+    - if a.persisted?
+        li
+          p= a.body
+          p= link_to 'Delete answer',
+                     answer_path(a),
+                     method: :delete,
+                     data: { confirm: 'Are you sure?' }
