@@ -3,6 +3,7 @@ require 'rails_helper'
 feature 'Create answer', %q{
   As a user
   I can answer the question
+  On the question page
 } do
 
   given(:user) { create(:user) }
