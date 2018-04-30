@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 feature 'User register', %q{
+  In order to ask questions and create answers
   As unregistered user
   I want to be able to register
 } do
