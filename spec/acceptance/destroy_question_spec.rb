@@ -16,6 +16,7 @@ feature 'Delete question', %q{
 
     expect(page).to have_content 'Question deleted.'
     expect(current_path).to eq questions_path
+    expect(current_path).to_not have_content question.body
   end
 
   scenario 'Authenticate user tries to delete question he did not create' do
