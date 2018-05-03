@@ -1,5 +1,5 @@
 div
-  - resource.present? && resource.errors.any?
+  - resource&.errors.any?
     h3
       = resource.errors.count
       = ' error(s):'
