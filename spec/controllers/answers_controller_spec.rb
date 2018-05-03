@@ -41,9 +41,7 @@ RSpec.describe AnswersController, type: :controller do
     let!(:answer) { create(:answer, question: question, user: user) }
 
     context 'Author tries delete answer' do
-      before do
-        sign_in(user)
-      end
+      before { sign_in(user) }
 
       it 'deletes answer' do
         expect { delete :destroy, params: { id: answer } }.to change(user.answers, :count).by(-1)
@@ -56,9 +54,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'Non-author tries delete answer' do
-      before do
-        sign_in(another_user)
-      end
+      before { sign_in(another_user) }
 
       it 'does not delete answer' do
         expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
