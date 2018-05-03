@@ -12,7 +12,8 @@ feature 'See question and answers', %q{
   scenario 'User can see question and answers on it' do
     visit(question_path(question))
 
-    expect(page).to have_content 'Question'
-    expect(page).to have_content 'Answer'
+    expect(page).to have_content 'TestQuestionTitle'
+    expect(page).to have_content 'TestQuestionBody'
+    expect(page).to have_content 'TestAnswerBody'
   end
 end

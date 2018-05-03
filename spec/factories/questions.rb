@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :question do
-    title "MyString"
-    body "TestQuestion"
+    title "TestQuestionTitle"
+    body "TestQuestionBody"
   end
 
   factory :invalid_question, class: 'Question' do

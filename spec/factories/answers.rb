@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :answer do
-    body "TestAnswer"
+    body "TestAnswerBody"
     question nil
   end
 
