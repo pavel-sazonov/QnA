@@ -9,7 +9,7 @@ feature 'Create answer', %q{
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
-  scenario 'Authenticated user answer the question' do
+  scenario 'Authenticated user answer the question with valid attributes' do
     sign_in(user)
 
     visit question_path(question)
@@ -18,6 +18,15 @@ feature 'Create answer', %q{
 
     expect(page).to have_content 'Your answer successfully created.'
     expect(page).to have_content 'some answer'
+  end
+
+  scenario 'Authenticated user creates answer the question with invalid attributes' do
+    sign_in(user)
+
+    visit question_path(question)
+    click_on 'Create'
+
+    expect(page).to have_content 'error(s):'
   end
 
   scenario 'Non-authenticated user tries to answer the question' do
