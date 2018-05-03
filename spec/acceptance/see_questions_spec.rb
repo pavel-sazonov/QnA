@@ -5,9 +5,15 @@ feature 'See list of all questions', %q{
   I can see list of all questions
 } do
 
+  given(:user) { create(:user) }
+  given(:question) { create_list(:question, 5, user: user) }
+
   scenario 'User see questions' do
     visit questions_path
 
-    expect(page).to have_css('ul.questions')
+    user.questions.each do |question|
+      expect(page).to have_content question.title
+      expect(page).to have_content question.body
+    end
   end
 end

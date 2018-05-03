@@ -118,9 +118,12 @@ RSpec.describe QuestionsController, type: :controller do
       before { patch :update, params: { id: question, question: { title: 'new title', body: nil } } }
 
       it 'does not change question attributes' do
+        original_question = question
+
         question.reload
-        expect(question.title).to eq 'TestQuestionTitle'
-        expect(question.body).to eq 'TestQuestionBody'
+
+        expect(question.title).to eq original_question.title
+        expect(question.body).to eq original_question.body
       end
 
       it 're-renders edit view' do
