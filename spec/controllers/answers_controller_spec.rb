@@ -23,9 +23,9 @@ RSpec.describe AnswersController, type: :controller do
           } }.to change(question.answers, :count).by(1)
       end
 
-      it "redirect to question's show view" do
+      it 'redirect to question show view' do
         post :create, params: { answer: attributes_for(:answer), question_id: question }
-        expect(response).to redirect_to question_path(assigns(:question))
+        expect(response).to redirect_to question_path(question)
       end
     end
 
@@ -60,7 +60,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
       end
 
-      it "redirects to question's show view" do
+      it 'redirects to question show view' do
         delete :destroy, params: { id: answer }
         expect(response).to redirect_to question_path(question)
       end
