@@ -13,11 +13,11 @@ RSpec.describe User do
     let(:question) { create(:question, user: user) }
 
     it 'Returns true if item belongs to user' do
-      expect(question.user_id).to eq user.id
+      expect(user.author_of?(question)).to eq true
     end
 
     it 'Returns false if item does not belong to user' do
-      expect(question.user_id).to_not eq another_user.id
+      expect(another_user.author_of?(question)).to eq false
     end
   end
 end
