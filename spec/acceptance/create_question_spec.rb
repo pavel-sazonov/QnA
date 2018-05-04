@@ -28,7 +28,10 @@ feature 'Create question', %q{
     click_on 'Ask question'
     click_on 'Create'
 
-    expect(page).to have_content 'error(s):'
+    expect(page).to have_content 'Title can\'t be blank'
+    expect(page).to have_content 'Title is too short (minimum is 5 characters)'
+    expect(page).to have_content 'Body can\'t be blank'
+    expect(page).to have_content 'Body is too short (minimum is 5 characters)'
   end
 
   scenario 'Non-authenticated user tries to create question' do
