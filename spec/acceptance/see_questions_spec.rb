@@ -6,12 +6,12 @@ feature 'See list of all questions', %q{
 } do
 
   given(:user) { create(:user) }
-  given(:question) { create_list(:question, 5, user: user) }
+  given!(:questions) { create_list(:question, 5, user: user) }
 
   scenario 'User see questions' do
     visit questions_path
 
-    user.questions.each do |question|
+    questions.each do |question|
       expect(page).to have_content question.title
       expect(page).to have_content question.body
     end
