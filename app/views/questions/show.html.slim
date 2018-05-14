@@ -15,8 +15,5 @@ p= @question.body
     p= f.text_area :body
     p= f.submit 'Create'
 - else
-  = 'Your must '
-  = link_to 'Login', new_user_session_path
-  = ' or '
-  = link_to 'Register', new_user_registration_path
-  = ' to answer the question'
+  p
+    | You must #{link_to('Login', new_user_session_path)} or #{link_to('Register', new_user_session_path)} to answer the question.
