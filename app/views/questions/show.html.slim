@@ -2,24 +2,13 @@ p= @question.title
 p= @question.body
 
 - if current_user&.author_of?(@question)
-    p= link_to 'Delete question',
-               question_path(@question),
-               method: :delete,
-               data: { confirm: 'Are you sure?' }
+    p= link_to 'Delete question', question_path(@question), method: :delete
 
-ul.answers
-  - @question.answers.each do |a|
-    - if a.persisted?
-        li
-          p= a.body
-          - if current_user&.author_of?(a)
-              p= link_to 'Delete answer',
-                         answer_path(a),
-                         method: :delete,
-                         data: { confirm: 'Are you sure?' }
+.answers
+  = render 'answers'
 
 = render 'shared/errors', resource: @answer
-= form_for [@question, @answer] do |f|
-  p= f.label :body
+= form_for [@question, @answer], remote: true do |f|
+  p= f.label :body, 'Enter your answer:'
   p= f.text_area :body
   p= f.submit 'Create'
