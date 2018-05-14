@@ -5,10 +5,18 @@ p= @question.body
     p= link_to 'Delete question', question_path(@question), method: :delete
 
 .answers
-  = render 'answers'
+  = render @question.answers
 
-= render 'shared/errors', resource: @answer
-= form_for [@question, @answer], remote: true do |f|
-  p= f.label :body, 'Enter your answer:'
-  p= f.text_area :body
-  p= f.submit 'Create'
+.errors
+
+- if current_user
+  = form_for [@question, @answer], remote: true do |f|
+    p= f.label :body, 'Enter your answer:'
+    p= f.text_area :body
+    p= f.submit 'Create'
+- else
+  = 'Your must '
+  = link_to 'Login', new_user_session_path
+  = ' or '
+  = link_to 'Register', new_user_registration_path
+  = ' to answer the question'
