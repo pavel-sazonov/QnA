@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'Create answer', %q{
   As a user
@@ -36,6 +36,6 @@ feature 'Create answer', %q{
   scenario 'Non-authenticated user tries to answer the question', js: true do
     visit question_path(question)
 
-    expect(page).to have_content 'Your must Login or Register to answer the question'
+    expect(page).to have_content 'You must Login or Register to answer the question'
   end
 end
