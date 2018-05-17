@@ -4,4 +4,6 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
   validates :body, length: { minimum: 5 }, allow_nil: true
+
+  default_scope { order(:created_at) }
 end

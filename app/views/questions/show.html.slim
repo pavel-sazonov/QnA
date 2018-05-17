@@ -1,19 +1,22 @@
-p= @question.title
-p= @question.body
-
-- if current_user&.author_of?(@question)
-    p= link_to 'Delete question', question_path(@question), method: :delete
+h3= @question.title
+p
+  = @question.body
+  br
+  - if current_user&.author_of?(@question)
+      = link_to 'Delete question', question_path(@question), method: :delete
 
 .answers
   = render @question.answers
 
 .errors
 
-- if current_user
-  = form_for [@question, @answer], remote: true do |f|
-    p= f.label :body, 'Enter your answer:'
-    p= f.text_area :body
-    p= f.submit 'Create'
-- else
-  p
+p
+  - if current_user
+    = form_for [@question, @answer], remote: true do |f|
+      = f.label :body, 'Enter your answer:'
+      br
+      = f.text_area :body
+      br
+      = f.submit 'Create'
+  - else
     | You must #{link_to('Login', new_user_session_path)} or #{link_to('Register', new_user_session_path)} to answer the question.

@@ -1,16 +1,19 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_question, only: :create
+  before_action :find_answer, only: %i[update destroy]
 
   def create
+    @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
     @answer.save
   end
 
-  def destroy
-    @answer = Answer.find(params[:id])
+  def update
+    @answer.update(answer_params) if current_user.author_of?(@answer)
+  end
 
+  def destroy
     if current_user.author_of?(@answer)
       @answer.destroy
       flash[:notice] = 'Answer deleted.'
@@ -23,8 +26,8 @@ class AnswersController < ApplicationController
 
   private
 
-  def find_question
-    @question = Question.find(params[:question_id])
+  def find_answer
+    @answer = Answer.find(params[:id])
   end
 
   def answer_params
