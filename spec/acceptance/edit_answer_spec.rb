@@ -31,7 +31,7 @@ feature 'Answer editing', %q{
       end
     end
 
-    scenario 'tries to edit his answer', js: true do
+    scenario 'tries to edit his answer with valid attributes', js: true do
       within '.answers' do
         click_on 'Edit'
         fill_in 'Answer', with: 'edited answer'
@@ -41,6 +41,17 @@ feature 'Answer editing', %q{
         expect(page).to have_content 'edited answer'
         expect(page).to_not have_selector 'textarea'
       end
+    end
+
+    scenario 'tries to edit his answer with invalid attributes', js: true do
+      within '.answers' do
+        click_on 'Edit'
+        fill_in 'Answer', with: ''
+        click_on 'Save'
+      end
+
+      expect(page).to have_content 'Body can\'t be blank'
+      expect(page).to have_content 'Body is too short (minimum is 5 characters)'
     end
   end
 
