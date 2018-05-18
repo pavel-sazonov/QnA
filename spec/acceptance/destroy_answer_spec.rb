@@ -14,6 +14,7 @@ feature 'Delete answer', %q{
     sign_in(user)
     visit question_path(question)
     within '.answers' do
+      expect(page).to have_link 'Delete'
       click_on 'Delete'
     end
 
@@ -26,12 +27,16 @@ feature 'Delete answer', %q{
     sign_in(another_user)
     visit question_path(question)
 
-    expect(page).to_not have_link 'Delete answer'
+    within '.answers' do
+      expect(page).to_not have_link 'Delete'
+    end
   end
 
   scenario 'Non-authenticated user tries to delete answer' do
     visit question_path(question)
 
-    expect(page).to_not have_link 'Delete answer'
+    within '.answers' do
+      expect(page).to_not have_link 'Delete'
+    end
   end
 end
