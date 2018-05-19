@@ -10,7 +10,7 @@ h3= 'Answers'
 p
   - if current_user
     = form_for [@question, @answer], remote: true do |f|
-      = f.label :body, 'Enter your answer:'
+      = f.label :body, 'Your answer'
       br
       = f.text_area :body
       br
