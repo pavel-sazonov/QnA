@@ -136,4 +136,26 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #best' do
+    context 'Author of question tries set answer as best' do
+      before { sign_in user }
+
+      it 'set answer best attribute to true' do
+        patch :set_best, params: { id: answer, answer: { best: true }, format: :js }
+        answer.reload
+        expect(answer.best).to eq true
+      end
+    end
+
+    context 'Non-author of question tries set answer as best' do
+      before { sign_in another_user }
+
+      it 'does not set answer best attribute to true' do
+        patch :set_best, params: { id: answer, answer: { best: true }, format: :js }
+        answer.reload
+        expect(answer.best).to_not eq true
+      end
+    end
+  end
 end
