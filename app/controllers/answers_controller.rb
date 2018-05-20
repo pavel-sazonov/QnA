@@ -18,8 +18,19 @@ class AnswersController < ApplicationController
   end
 
   def set_best
-    @answer.question.answers.update(best: false)
-    @answer.update(best: true) if current_user.author_of?(@answer.question)
+    @question = @answer.question
+
+    # первый вариант сброса старого лучшего ответа (вынести его в метод модели ответа)
+    # old_best_answer = @question.answers.find_by(best: true)
+
+    # if old_best_answer
+    #   old_best_answer.update(best: false)
+    # end
+
+    # второй вариант
+    @question.answers.update(best: false)
+
+    @answer.update(best: true) if current_user.author_of?(@question)
   end
 
   private

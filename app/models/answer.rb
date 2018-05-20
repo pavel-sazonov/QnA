@@ -5,5 +5,5 @@ class Answer < ApplicationRecord
   validates :body, presence: true
   validates :body, length: { minimum: 5 }, allow_nil: true
 
-  default_scope { order(:created_at) }
+  default_scope { order(best: :desc, created_at: :asc) }
 end

@@ -1,8 +1,8 @@
 - if answer.persisted?
   li id="answer_#{answer.id}" class="answer"
     - if answer.best?
-      p
-        b= 'The best answer'
+      b= 'The best answer'
+      br
     = answer.body
     br
 

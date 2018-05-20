@@ -5,39 +5,45 @@ feature 'Choose best answer', %q{
   I'd like to be able to choose best answer
 } do
 
-  given(:author) { create(:user) }
+  given(:question_author) { create(:user) }
   given(:user) { create(:user) }
-  given(:question) { create(:question, user: author) }
-  given!(:answer) { create(:answer, question: question, user: author) }
+  given(:question) { create(:question, user: question_author) }
+  given!(:answer) { create(:answer, question: question, user: user) }
   given!(:another_answer) { create(:answer, question: question, user: user) }
 
-  describe 'Author of question' do
-    before do
-      sign_in author
-      visit question_path(question)
+  scenario 'Author of question chooses best answer', js: true do
+    sign_in question_author
+    visit question_path(question)
+
+    within "#answer_#{answer.id}" do
+      click_on 'Set best answer'
     end
 
-    scenario "sees 'Set best answer' link" do
-      expect(page).to have_link 'Set best answer'
+    within '.answer:first-child' do
+      expect(page).to have_content 'The best answer'
+      expect(page).to have_content answer.body
     end
 
-    scenario 'chooses best answer', js: true do
-      within "#answer_#{answer.id}" do
-        click_on 'Set best answer'
-        expect(page).to have_content 'The best answer'
-      end
+    within "#answer_#{another_answer.id}" do
+      click_on 'Set best answer'
     end
 
-    scenario 'The best answer become first of the answer\'s list'
+    within '.answer:first-child' do
+      expect(page).to have_content 'The best answer'
+      expect(page).to have_content another_answer.body
+    end
   end
 
   scenario 'Non-author of question does not see best answer link' do
     sign_in user
+    visit question_path(question)
 
-    expect(page).to_not have_link 'Set best answer'
+    expect(page).to have_no_link 'Set best answer'
   end
 
   scenario 'Unauthenticated user does not see best answer link' do
-    expect(page).to_not have_link 'Best answer'
+    visit question_path(question)
+
+    expect(page).to have_no_link 'Set best answer'
   end
 end
