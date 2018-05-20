@@ -31,6 +31,7 @@ feature 'Choose best answer', %q{
     within '.answer:first-child' do
       expect(page).to have_content 'The best answer'
       expect(page).to have_content another_answer.body
+      expect(page).to have_no_link 'Set best answer'
     end
   end
 
