@@ -14,16 +14,17 @@ RSpec.describe Answer, type: :model do
 
   describe '#set_best' do
     let(:user) { create(:user) }
-    # let(:another_user) { create(:user) }
     let(:question) { create(:question, user: user) }
     let(:answer) { create(:answer, question: question, user: user) }
     let(:another_answer) { create(:answer, question: question, user: user) }
 
+    before { answer.set_best }
+
     it 'Set answer the best ' do
-      answer.set_best
-
       expect(answer).to be_best
+    end
 
+    it 'if there was best answer set it to non best' do
       another_answer.set_best
       answer.reload
 
