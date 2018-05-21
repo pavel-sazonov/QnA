@@ -1,0 +1,21 @@
+.question
+  h3= question.title
+  p
+    = question.body
+    br
+
+    - if current_user&.author_of?(question)
+      => link_to 'Edit', '', class: 'edit-question-link'
+      = link_to 'Delete', question_path(question), method: :delete
+
+      p
+        = form_for question, remote: true do |f|
+          = f.label :title
+          br
+          = f.text_field :title
+          br
+          = f.label :body
+          br
+          = f.text_area :body
+          br
+          = f.submit 'Save'

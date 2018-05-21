@@ -30,7 +30,6 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.extend ControllerMacros, type: :controller
-  config.include AcceptanceHelpers, type: :feature
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
