@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
-  it { should belong_to(:user) }
-  it { should belong_to(:question) }
+  it { should belong_to :user }
+  it { should belong_to :question }
+  it { should have_many(:attachments).dependent(:destroy) }
 
   it { should validate_presence_of :body }
   it do
@@ -32,4 +33,6 @@ RSpec.describe Answer, type: :model do
       expect(answer).to_not be_best
     end
   end
+
+  it { should accept_nested_attributes_for :attachments }
 end
