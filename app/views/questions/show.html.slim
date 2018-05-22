@@ -2,6 +2,11 @@
 
 = render @question
 
+p Attachments:
+ul
+  - @question.attachments.each do |a|
+    li= a.file.file.filename
+
 h3= 'Answers'
 ol.answers
   = render @question.answers
