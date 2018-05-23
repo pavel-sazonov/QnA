@@ -19,6 +19,11 @@ p
       br
       = f.text_area :body, id: 'answer_body_create'
       br
+      p Attachments:
+      p
+        = f.fields_for :attachments do |a|
+          = a.label :file
+          = a.file_field :file
       = f.submit 'Create'
   - else
     | You must #{link_to('Login', new_user_session_path)} or #{link_to('Register', new_user_session_path)} to answer the question.

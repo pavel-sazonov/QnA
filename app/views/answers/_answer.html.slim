@@ -3,9 +3,12 @@
     div id="answer_#{answer.id}" class="answer"
       - if answer.best?
         b= 'The best answer'
-        br
-      = answer.body
-      br
+
+      p= answer.body
+
+      ul
+        - answer.attachments.each do |a|
+          li= link_to a.file.identifier, a.file.url
 
       - if current_user&.author_of?(answer.question) && !answer.best?
         = link_to 'Set best answer', set_best_answer_path(answer), method: :patch, remote: true
