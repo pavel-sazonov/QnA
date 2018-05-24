@@ -2,6 +2,8 @@
   h3= question.title
   p= question.body
 
+  =render 'shared/attachments_list', resource: question
+
   - if current_user&.author_of?(question)
 
     => link_to 'Edit', '', class: 'edit-question-link'

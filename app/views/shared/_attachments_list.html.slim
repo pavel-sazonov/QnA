@@ -1,0 +1,6 @@
+ul
+  - resource.attachments.each do |a|
+    li class="attachment-#{a.id}"
+      => link_to a.file.identifier, a.file.url
+      - if current_user&.author_of?(resource)
+        = link_to 'Delete attachment', attachment_path(a), method: :delete, remote: true
