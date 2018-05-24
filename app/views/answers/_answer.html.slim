@@ -4,15 +4,13 @@
       - if answer.best?
         b= 'The best answer'
 
-      p= answer.body
+      = answer.body
 
-      ul
-        - answer.attachments.each do |a|
-          li= link_to a.file.identifier, a.file.url
+      =render 'shared/attachments_list', resource: answer
 
-      - if current_user&.author_of?(answer.question) && !answer.best?
-        = link_to 'Set best answer', set_best_answer_path(answer), method: :patch, remote: true
-        br
+      p
+        - if current_user&.author_of?(answer.question) && !answer.best?
+          = link_to 'Set best answer', set_best_answer_path(answer), method: :patch, remote: true
 
       - if current_user&.author_of?(answer)
 
