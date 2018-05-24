@@ -9,12 +9,6 @@
       = f.label :body
       = f.text_area :body
 
-    p Attachments:
-    #attachments
-      = f.fields_for :attachments do |attachment|
-        = render 'attachment_fields', f: attachment
-
-        .links
-          = link_to_add_association 'add attachment', f, :attachments
+    = render 'attachments', f: f
 
     p= f.submit 'Create'
