@@ -3,13 +3,14 @@
     div id="answer_#{answer.id}" class="answer"
       - if answer.best?
         b= 'The best answer'
-        br
-      = answer.body
-      br
 
-      - if current_user&.author_of?(answer.question) && !answer.best?
-        = link_to 'Set best answer', set_best_answer_path(answer), method: :patch, remote: true
-        br
+      = answer.body
+
+      =render 'shared/attachments_list', resource: answer
+
+      p
+        - if current_user&.author_of?(answer.question) && !answer.best?
+          = link_to 'Set best answer', set_best_answer_path(answer), method: :patch, remote: true
 
       - if current_user&.author_of?(answer)
 

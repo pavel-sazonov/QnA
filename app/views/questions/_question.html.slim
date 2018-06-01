@@ -1,21 +1,22 @@
 .question
   h3= question.title
-  p
-    = question.body
-    br
+  p= question.body
 
-    - if current_user&.author_of?(question)
-      => link_to 'Edit', '', class: 'edit-question-link'
-      = link_to 'Delete', question_path(question), method: :delete
+  =render 'shared/attachments_list', resource: question
 
-      p
-        = form_for question, remote: true do |f|
-          = f.label :title
-          br
-          = f.text_field :title
-          br
-          = f.label :body
-          br
-          = f.text_area :body
-          br
-          = f.submit 'Save'
+  - if current_user&.author_of?(question)
+
+    => link_to 'Edit', '', class: 'edit-question-link'
+    = link_to 'Delete', question_path(question), method: :delete
+
+
+    p= form_for question, remote: true do |f|
+      = f.label :title
+      br
+      = f.text_field :title
+      br
+      = f.label :body
+      br
+      = f.text_area :body
+      br
+      = f.submit 'Save'
