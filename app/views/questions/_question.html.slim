@@ -1,6 +1,12 @@
 .question
   h3= question.title
   p= question.body
+  p.raiting
+    | Raiting:
+    br
+    => link_to '+', '', class: 'plus-raiting'
+    => '45'
+    = link_to '-', '', class: 'minus-raiting'
 
   =render 'shared/attachments_list', resource: question
 
