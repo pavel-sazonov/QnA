@@ -1,7 +1,7 @@
 class Answer < ApplicationRecord
-  belongs_to :user
+  include Attachable
+
   belongs_to :question
-  has_many :attachments, as: :attachable, dependent: :destroy
 
   validates :body, presence: true
   validates :body, length: { minimum: 5 }, allow_nil: true
