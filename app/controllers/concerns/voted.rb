@@ -7,16 +7,17 @@ module Voted
 
   def vote_up
     @vote = current_user.vote(@votable, 1)
-    vote_respond(@vote)
+    votable_raiting
   end
 
   def vote_down
     @vote = current_user.vote(@votable, -1)
-    vote_respond(@vote)
+    votable_raiting
   end
 
   def cancel_vote
     @votable.votes.where(user: current_user).destroy_all
+    votable_raiting
   end
 
   private
@@ -29,11 +30,9 @@ module Voted
     controller_name.classify.constantize
   end
 
-  def vote_respond(vote)
-    if vote
-      respond_to do |format|
-        format.json { render json: vote }
-      end
+  def votable_raiting
+    respond_to do |format|
+      format.json { render json: @votable.raiting }
     end
   end
 end
