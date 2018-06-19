@@ -10,4 +10,12 @@ class User < ApplicationRecord
   def author_of?(item)
     id == item.user_id
   end
+
+  def vote(resource, value)
+    if !author_of?(resource) && votes.empty?
+      Vote.create(user: self, votable: resource, value: value)
+    else
+      false
+    end
+  end
 end
