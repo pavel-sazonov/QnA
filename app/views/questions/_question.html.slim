@@ -5,15 +5,21 @@
   =render 'shared/attachments_list', resource: question
 
   / - if current_user && !current_user.author_of?(question)
-  p
-    | Raiting:
-    br
-    => link_to '+', vote_up_question_path, class: 'vote-up-link', method: :post, remote: true, data: { type: :json }
+  p.question-vote
+    => "Raiting: "
+
+    - if current_user && !current_user.author_of?(question)
+      => link_to '+', vote_up_question_path, class: 'vote-up-link', method: :post, remote: true, data: { type: :json }
+
     span.question-raiting
       => question.raiting
-    = link_to '-', vote_down_question_path, class: 'vote-down-link', method: :post, remote: true, data: { type: :json }
-    br
-    = link_to 'cancel vote', cancel_vote_question_path, class: 'vote-cancel-link', method: :delete, remote: :true
+
+    - if current_user && !current_user.author_of?(question)
+      = link_to '-', vote_down_question_path, class: 'vote-down-link', method: :post, remote: true, data: { type: :json }
+
+    - if current_user && !current_user.author_of?(question)
+      br
+      = link_to 'cancel vote', cancel_vote_question_path, class: 'vote-cancel-link', method: :delete, remote: :true, data: { type: :json }
 
   - if current_user&.author_of?(question)
 

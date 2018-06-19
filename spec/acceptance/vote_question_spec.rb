@@ -9,36 +9,40 @@ feature 'Vote for question', %q{
   given(:user) { create(:user) }
   given(:question) { create(:question, user: author) }
 
-  background do
-
-  end
-
-  scenario "Non authenticated user tries to vote for question" do
+  scenario "Non authenticated user" do
     visit question_path(question)
 
-    within ".question" do
+    within ".question-vote" do
       expect(page).to have_no_link "+"
       expect(page).to have_no_link "-"
+      expect(page).to have_content question.raiting
     end
   end
 
-  scenario "Question author tries to vote for his question" do
+  scenario "Question author" do
     sign_in(author)
     visit question_path(question)
 
-    within ".question" do
+    within ".question-vote" do
       expect(page).to have_no_link "+"
       expect(page).to have_no_link "-"
+      expect(page).to have_content question.raiting
     end
   end
 
-  scenario "Authenticated user tries to vote for question", js: true do
+  scenario "Authenticated user", js: true do
     sign_in(user)
     visit question_path(question)
 
-    within ".question-raiting" do
+    within ".question-vote" do
       click_on "+"
-      expect(page).to have_content question.vote_result
+      expect(page).to have_content 1
+
+      click_on "cancel vote"
+      expect(page).to have_content 0
+
+      click_on "-"
+      expect(page).to have_content(-1)
     end
   end
 end
