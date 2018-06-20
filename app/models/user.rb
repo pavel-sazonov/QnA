@@ -13,7 +13,7 @@ class User < ApplicationRecord
 
   def vote(resource, value)
     if !author_of?(resource) && resource.voted_by(self).empty?
-      Vote.create(user: self, votable: resource, value: value)
+      votes.create(user: self, votable: resource, value: value)
     else
       false
     end

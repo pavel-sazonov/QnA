@@ -11,7 +11,7 @@ ready = ->
 
   $('.vote-up-link, .vote-down-link, .vote-cancel-link').on 'ajax:success', (event) ->
     response_json = $.parseJSON(event.detail[2].responseText)
-    $('.answer-raiting-' + response_json.votable_id).html(response_json.raiting + ' ')
+    $('.answer-rating-' + response_json.votable_id).html(response_json.rating + ' ')
 
 $(document).ready(ready)
 $(document).on('turbolinks:load', ready)

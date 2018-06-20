@@ -7,13 +7,13 @@
     p= answer.body
 
     p.answer-vote
-      => "Raiting: "
+      => "Rating: "
 
       - if current_user && !current_user.author_of?(answer)
         => link_to '+', vote_up_answer_path(answer), class: 'vote-up-link', method: :post, remote: true, data: { type: :json }
 
-      span class="answer-raiting-#{answer.id}"
-        => answer.raiting
+      span class="answer-rating-#{answer.id}"
+        => answer.rating
 
       - if current_user && !current_user.author_of?(answer)
         = link_to '-', vote_down_answer_path(answer), class: 'vote-down-link', method: :post, remote: true, data: { type: :json }

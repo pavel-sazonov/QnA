@@ -3,11 +3,10 @@ module Votable
 
   included do
     has_many :votes, as: :votable, dependent: :destroy
-    # scope :voted_by, ->(user) { votes.where(user: user) }
   end
 
-  def raiting
-    votes.pluck(:value).sum
+  def rating
+    votes.sum(:value)
   end
 
   def voted_by(user)

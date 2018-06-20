@@ -10,7 +10,7 @@ ready = ->
 
   $('.question-vote').on 'ajax:success', (event) ->
     response_json = $.parseJSON(event.detail[2].responseText)
-    $('.question-raiting').html(response_json.raiting + ' ')
+    $('.question-rating').html(response_json.rating + ' ')
 
 $(document).ready(ready)
 $(document).on('turbolinks:load', ready)

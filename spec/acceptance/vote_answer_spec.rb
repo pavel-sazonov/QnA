@@ -16,7 +16,7 @@ feature 'Vote for answer', %q{
     within ".answer-vote" do
       expect(page).to have_no_link "+"
       expect(page).to have_no_link "-"
-      expect(page).to have_content answer.raiting
+      expect(page).to have_content answer.rating
     end
   end
 
@@ -27,7 +27,7 @@ feature 'Vote for answer', %q{
     within ".answer-vote" do
       expect(page).to have_no_link "+"
       expect(page).to have_no_link "-"
-      expect(page).to have_content answer.raiting
+      expect(page).to have_content answer.rating
     end
   end
 

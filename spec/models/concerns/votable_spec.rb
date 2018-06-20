@@ -9,8 +9,8 @@ shared_examples_for "votable" do
   let!(:vote_one) { create(:vote, user: users.first, votable: question, value: 1) }
   let!(:vote_two) { create(:vote, user: users.last, votable: question, value: 1) }
 
-  it "#raiting" do
-    expect(question.raiting).to eq 2
+  it "#rating" do
+    expect(question.rating).to eq 2
   end
 
   it "#voted_by" do
