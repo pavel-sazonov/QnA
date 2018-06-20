@@ -1,6 +1,6 @@
 require "rails_helper"
 
-shared_examples "voted" do
+shared_examples_for "voted" do
   let(:author) { create(:user) }
   let(:user) { create(:user) }
   let(:question) { create(:question, user: author) }
@@ -18,8 +18,4 @@ shared_examples "voted" do
     #   expect(response).to have_http_status(:success)
     # end
   end
-end
-
-describe QuestionsController, type: :controller do
-  it_behaves_like "voted"
 end
