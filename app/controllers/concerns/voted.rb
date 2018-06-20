@@ -32,7 +32,7 @@ module Voted
 
   def votable_raiting
     respond_to do |format|
-      format.json { render json: @votable.raiting }
+      format.json { render json: { raiting: @votable.raiting, votable_id: @votable.id } }
     end
   end
 end

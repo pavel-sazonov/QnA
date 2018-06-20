@@ -10,17 +10,17 @@
       => "Raiting: "
 
       - if current_user && !current_user.author_of?(answer)
-        => link_to '+', vote_up_answer_path(answer), class: 'vote-up-link', method: :post, remote: true, data: { type: :json, answer_id: answer.id }
+        => link_to '+', vote_up_answer_path(answer), class: 'vote-up-link', method: :post, remote: true, data: { type: :json }
 
       span class="answer-raiting-#{answer.id}"
         => answer.raiting
 
       - if current_user && !current_user.author_of?(answer)
-        = link_to '-', vote_down_answer_path(answer), class: 'vote-down-link', method: :post, remote: true, data: { type: :json, answer_id: answer.id }
+        = link_to '-', vote_down_answer_path(answer), class: 'vote-down-link', method: :post, remote: true, data: { type: :json }
 
       - if current_user && !current_user.author_of?(answer)
         br
-        = link_to 'cancel vote', cancel_vote_answer_path(answer), class: 'vote-cancel-link', method: :delete, remote: :true, data: { type: :json, answer_id: answer.id }
+        = link_to 'cancel vote', cancel_vote_answer_path(answer), class: 'vote-cancel-link', method: :delete, remote: :true, data: { type: :json }
 
     =render 'shared/attachments_list', resource: answer
 

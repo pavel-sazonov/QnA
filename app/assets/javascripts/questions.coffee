@@ -8,17 +8,9 @@ ready = ->
     $(this).hide();
     $('form.edit_question').show();
 
-  $('.question .vote-up-link').on 'ajax:success', (event) ->
-    raiting = $.parseJSON(event.detail[2].responseText)
-    $('.question-raiting').html(raiting + ' ')
-
-  $('.question .vote-down-link').on 'ajax:success', (event) ->
-    raiting = $.parseJSON(event.detail[2].responseText)
-    $('.question-raiting').html(raiting + ' ')
-
-  $('.question .vote-cancel-link').on 'ajax:success', (event) ->
-    raiting = $.parseJSON(event.detail[2].responseText)
-    $('.question-raiting').html(raiting + ' ')
+  $('.question-vote').on 'ajax:success', (event) ->
+    response_json = $.parseJSON(event.detail[2].responseText)
+    $('.question-raiting').html(response_json.raiting + ' ')
 
 $(document).ready(ready)
 $(document).on('turbolinks:load', ready)
