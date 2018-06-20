@@ -8,5 +8,9 @@ ready = ->
     $(this).hide();
     $('form.edit_question').show();
 
+  $('.question-vote').on 'ajax:success', (event) ->
+    response_json = $.parseJSON(event.detail[2].responseText)
+    $('.question-rating').html(response_json.rating + ' ')
+
 $(document).ready(ready)
 $(document).on('turbolinks:load', ready)

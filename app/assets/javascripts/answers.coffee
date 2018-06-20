@@ -9,5 +9,9 @@ ready = ->
     answer_id = $(this).data('answerId');
     $('form#edit-answer-' + answer_id).show();
 
+  $('.vote-up-link, .vote-down-link, .vote-cancel-link').on 'ajax:success', (event) ->
+    response_json = $.parseJSON(event.detail[2].responseText)
+    $('.answer-rating-' + response_json.votable_id).html(response_json.rating + ' ')
+
 $(document).ready(ready)
 $(document).on('turbolinks:load', ready)
