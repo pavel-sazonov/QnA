@@ -9,6 +9,9 @@ Rails.application.routes.draw do
 
     resources :answers, shallow: true do
       patch 'set_best', on: :member
+      post 'vote_up', on: :member
+      post 'vote_down', on: :member
+      delete 'cancel_vote', on: :member
     end
   end
 

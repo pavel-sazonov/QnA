@@ -9,5 +9,20 @@ ready = ->
     answer_id = $(this).data('answerId');
     $('form#edit-answer-' + answer_id).show();
 
+  $('.answers .vote-up-link').on 'ajax:success', (event) ->
+    answer_id = $(this).data('answerId')
+    raiting = $.parseJSON(event.detail[2].responseText)
+    $('.answer-raiting-' + answer_id).html(raiting + ' ')
+
+  $('.answers .vote-down-link').on 'ajax:success', (event) ->
+    answer_id = $(this).data('answerId')
+    raiting = $.parseJSON(event.detail[2].responseText)
+    $('.answer-raiting-' + answer_id).html(raiting + ' ')
+
+  $('.answers .vote-cancel-link').on 'ajax:success', (event) ->
+    answer_id = $(this).data('answerId')
+    raiting = $.parseJSON(event.detail[2].responseText)
+    $('.answer-raiting-' + answer_id).html(raiting + ' ')
+
 $(document).ready(ready)
 $(document).on('turbolinks:load', ready)

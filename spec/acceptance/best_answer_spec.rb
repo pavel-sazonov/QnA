@@ -19,7 +19,7 @@ feature 'Choose best answer', %q{
       click_on 'Set best answer'
     end
 
-    within '.answers li:first-child' do
+    within '.answers .answer:first-child' do
       expect(page).to have_content 'The best answer'
       expect(page).to have_content answer.body
     end
@@ -28,7 +28,7 @@ feature 'Choose best answer', %q{
       click_on 'Set best answer'
     end
 
-    within '.answers li:first-child' do
+    within '.answers .answer:first-child' do
       expect(page).to have_content 'The best answer'
       expect(page).to have_content another_answer.body
       expect(page).to have_no_link 'Set best answer'

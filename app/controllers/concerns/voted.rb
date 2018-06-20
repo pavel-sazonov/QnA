@@ -16,7 +16,7 @@ module Voted
   end
 
   def cancel_vote
-    @votable.votes.where(user: current_user).destroy_all
+    @votable.voted_by(current_user).destroy_all
     votable_raiting
   end
 
