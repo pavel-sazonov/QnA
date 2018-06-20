@@ -8,10 +8,10 @@ shared_examples "voted" do
   describe 'POST #vote_up' do
     before { sign_in user }
 
-    # it 'saves a new user vote in the database' do
-    #   expect { post :vote_up, params: { question_id: question.id, format: :js } }
-    #     .to change(question.votes, :count).by(1)
-    # end
+    it 'saves a new user vote in the database' do
+      expect { post :vote_up, params: { question_id: question.id, format: :js } }
+        .to change(question.votes, :count).by(1)
+    end
 
     # it "renders vote json" do
     #   post :vote_up
