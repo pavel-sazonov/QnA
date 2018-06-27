@@ -1,11 +1,5 @@
-ul.questions
-  - @questions.each do |q|
-    li
-      p
-        = q.title
-        br
-        = q.body
-        br
-        = link_to 'Show', question_path(q)
+.questions-list
+  - @questions.each do |question|
+    =render 'question_for_index', question: question
 
 p= link_to 'Ask question', new_question_path

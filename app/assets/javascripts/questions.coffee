@@ -3,6 +3,8 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 ready = ->
+  questionsList = $('.questions-list')
+
   $('.question').on 'click', '.edit-question-link', (e) ->
     e.preventDefault();
     $(this).hide();
@@ -11,6 +13,15 @@ ready = ->
   $('.question-vote').on 'ajax:success', (event) ->
     response_json = $.parseJSON(event.detail[2].responseText)
     $('.question-rating').html(response_json.rating + ' ')
+
+  App.cable.subscriptions.create('QuestionsChannel', {
+  connected: ->
+    @perform 'follow'
+
+  received: (data) ->
+    questionsList.append data
+  })
+
 
 $(document).ready(ready)
 $(document).on('turbolinks:load', ready)
