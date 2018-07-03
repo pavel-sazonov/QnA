@@ -4,6 +4,7 @@ RSpec.describe Answer, type: :model do
   it_behaves_like 'attachable'
   it_behaves_like 'authorable'
   it_behaves_like 'votable'
+  it_behaves_like 'commentable'
 
   it { should belong_to :question }
 
