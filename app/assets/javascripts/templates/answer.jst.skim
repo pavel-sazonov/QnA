@@ -1,0 +1,31 @@
+.answer id="answer-#{@answer.id}"
+
+  .answer-body =@answer.body
+
+  .answer-vote
+    ="Rating: "
+
+    -if gon.user_id
+      a.vote-up-link data-type="json" data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/vote_up" +
+
+      '
+    span.answer-rating id="answer-rating-#{@answer.id}" =@rating
+
+
+    -if gon.user_id
+      '
+      a.vote-down-link data-type="json" data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/vote_down" -
+
+      '
+      a.vote-cancel-link data-type="json" data-remote="true" rel="nofollow" data-method="delete" href="/answers/#{@answer.id}/cancel_vote" cancel
+
+  .answer-links
+    -if gon.user_id == @questionUserId
+      a data-remote="true" rel="nofollow" data-method="patch" href="/answers/#{@answer.id}/set_best" Best
+
+  .attachments
+    -@attachments.forEach (attachment) ->
+      div class="attachment-#{attachment.id}"
+        a href="#{attachment.file.url}" =attachment.file.url.split("/").pop()
+
+  br

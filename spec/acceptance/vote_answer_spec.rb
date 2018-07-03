@@ -39,7 +39,7 @@ feature 'Vote for answer', %q{
       click_on "+"
       expect(page).to have_content 1
 
-      click_on "cancel vote"
+      click_on "cancel"
       expect(page).to have_content 0
 
       click_on "-"

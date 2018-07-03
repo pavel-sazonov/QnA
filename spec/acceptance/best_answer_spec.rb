@@ -15,8 +15,8 @@ feature 'Choose best answer', %q{
     sign_in question_author
     visit question_path(question)
 
-    within "#answer_#{answer.id}" do
-      click_on 'Set best answer'
+    within "#answer-#{answer.id}" do
+      click_on 'Best'
     end
 
     within '.answers .answer:first-child' do
@@ -24,14 +24,14 @@ feature 'Choose best answer', %q{
       expect(page).to have_content answer.body
     end
 
-    within "#answer_#{another_answer.id}" do
-      click_on 'Set best answer'
+    within "#answer-#{another_answer.id}" do
+      click_on 'Best'
     end
 
     within '.answers .answer:first-child' do
       expect(page).to have_content 'The best answer'
       expect(page).to have_content another_answer.body
-      expect(page).to have_no_link 'Set best answer'
+      expect(page).to have_no_link 'Best'
     end
   end
 
@@ -39,12 +39,12 @@ feature 'Choose best answer', %q{
     sign_in user
     visit question_path(question)
 
-    expect(page).to have_no_link 'Set best answer'
+    expect(page).to have_no_link 'Best'
   end
 
   scenario 'Unauthenticated user does not see best answer link' do
     visit question_path(question)
 
-    expect(page).to have_no_link 'Set best answer'
+    expect(page).to have_no_link 'Best'
   end
 end
