@@ -1,0 +1,5 @@
+.comment id="comment-#{@commentId}"
+  p
+  = @commentBody
+  '
+  a.delete-comment-link data-type="json" data-remote="true" rel="nofollow" data-method="delete" href="/comments/#{@commentId}" delete

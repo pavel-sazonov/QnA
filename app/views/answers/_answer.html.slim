@@ -43,4 +43,11 @@
     .attachments
       =render 'shared/attachments_list', resource: answer
 
-    br
+    .comments-answer
+      -if answer.comments.any?
+        -answer.comments.each do |comment|
+          =render 'shared/comment', comment: comment
+
+    .new-comment
+      -if current_user
+        =render 'shared/comment_form', commentable: answer

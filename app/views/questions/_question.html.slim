@@ -1,9 +1,9 @@
 h3= question.title
 p= question.body
 
-=render 'shared/attachments_list', resource: question
+-if question.attachments.any?
+  =render 'shared/attachments_list', resource: question
 
-/ - if current_user && !current_user.author_of?(question)
 p.question-vote
   => "Rating: "
 
@@ -35,3 +35,12 @@ p.question-vote
     = f.text_area :body
     br
     = f.submit 'Save'
+
+.comments-question
+  -if question.comments.any?
+    -question.comments.each do |comment|
+      =render 'shared/comment', comment: comment
+
+.new-comment
+  -if current_user
+    =render 'shared/comment_form', commentable: question
