@@ -1,5 +1,6 @@
-.comment id="comment-#{@commentId}"
+.comment id="comment-#{@comment.id}"
   p
-  = @commentBody
+  = @comment.body
   '
-  a.delete-comment-link data-type="json" data-remote="true" rel="nofollow" data-method="delete" href="/comments/#{@commentId}" delete
+  -if gon.user_id == @comment.user_id
+    a.delete-comment-link data-type="json" data-remote="true" rel="nofollow" data-method="delete" href="/comments/#{@comment.id}" delete

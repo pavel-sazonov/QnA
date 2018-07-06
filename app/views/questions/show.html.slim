@@ -6,7 +6,7 @@
 .answers
   h3= 'Answers'
 
-  = render @question.answers, comment: @comment
+  = render @question.answers
 
 - if current_user
   p= form_for [@question, @answer], remote: true do |f|

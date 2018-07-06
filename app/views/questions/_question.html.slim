@@ -36,7 +36,7 @@ p.question-vote
     br
     = f.submit 'Save'
 
-.comments-question
+.question-comments
   -if question.comments.any?
     -question.comments.each do |comment|
       =render 'shared/comment', comment: comment

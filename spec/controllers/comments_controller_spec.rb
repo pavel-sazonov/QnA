@@ -8,7 +8,7 @@ RSpec.describe CommentsController, type: :controller do
   let!(:comment) { create(:comment, commentable: question, user: user) }
 
   describe 'POST #create' do
-    context 'User tries to create comment' do
+    context 'valid attributes' do
       before { sign_in(user) }
 
       it "creates question's comment" do
@@ -37,20 +37,33 @@ RSpec.describe CommentsController, type: :controller do
         }
 
         response_json = JSON.parse(response.body)
-        expect(response_json['comment_id']).to eq comment.id + 1
-        expect(response_json['comment_body']).to eq comment.body
-        expect(response_json['commentable_class_name']).to eq question.class.name.underscore
+        expect(response_json['comment']['id']).to eq comment.id + 1
+        expect(response_json['comment']['body']).to eq comment.body
       end
     end
 
-    context 'Non authenticate user tries create comment' do
-      it 'does not save comment in database' do
+    context "invalid attributes" do
+      before { sign_in(user) }
+
+      it "does not save comment in database" do
         expect { post :create, params: {
-          comment: attributes_for(:comment),
+          comment: attributes_for(:invalid_comment),
           question_id: question,
           format: :json
         } }
           .to_not change(Comment, :count)
+      end
+
+      it "response with proper json" do
+        post :create, params: {
+          comment: attributes_for(:invalid_comment),
+          question_id: question,
+          format: :json
+        }
+
+        response_json = JSON.parse(response.body)
+        expect(response_json['errors']['body'].first).to eq "can't be blank"
+        expect(response_json['errors']['body'].last).to eq "is too short (minimum is 5 characters)"
       end
     end
   end

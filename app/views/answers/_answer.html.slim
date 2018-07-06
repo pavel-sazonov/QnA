@@ -43,7 +43,7 @@
     .attachments
       =render 'shared/attachments_list', resource: answer
 
-    .comments-answer
+    .answer-comments id="comments-answer-#{answer.id}"
       -if answer.comments.any?
         -answer.comments.each do |comment|
           =render 'shared/comment', comment: comment
