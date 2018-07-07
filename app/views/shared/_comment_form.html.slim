@@ -1,0 +1,14 @@
+=link_to 'add comment', '', class: 'new-comment-link', data: { commentable_id: commentable.id }
+
+p= form_for [commentable, commentable.comments.new],
+            remote: true,
+            data: { type: :json },
+            html: { id: "new-comment-commentable-#{commentable.id}",
+                    style: "display: none;" } do |f|
+
+  = f.label :body_create, 'Your comment'
+  br
+  = f.text_area :body, id: 'comment_body_create'
+  br
+  = f.submit 'Create'
+  = link_to 'cancel', '', class: 'cancel-new-comment', data: { commentable_id: commentable.id }

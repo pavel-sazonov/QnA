@@ -3,7 +3,6 @@ require "rails_helper"
 shared_examples_for "votable" do
   it { should have_many(:votes).dependent(:destroy) }
 
-  # let(:author) { create(:user) }
   let(:users) { create_list(:user, 3) }
   let(:question) { create(:question, user: users[0]) }
   let!(:vote_one) { create(:vote, user: users[1], votable: question, value: 1) }

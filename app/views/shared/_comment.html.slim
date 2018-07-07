@@ -1,0 +1,11 @@
+.comment id="comment-#{comment.id}"
+  p
+  =>comment.body
+
+  -if current_user&.author_of?(comment)
+    =link_to 'delete',
+             comment_path(comment),
+             class: 'delete-comment-link',
+             method: :delete,
+             remote: true,
+             data: { type: :json }

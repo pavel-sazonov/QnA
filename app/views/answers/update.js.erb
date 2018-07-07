@@ -1,2 +1,2 @@
 $('.errors').html('<%= j = render 'shared/errors', resource: @answer %>');
-$('#answer_<%= @answer.id %>').replaceWith('<%= j render @answer %>');
+$('#answer-<%= @answer.id %>').replaceWith('<%= j render @answer %>');

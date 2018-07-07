@@ -19,7 +19,7 @@ feature 'Add files to question', %q{
     click_on 'Create'
 
     expect(page).to have_link 'spec_helper.rb',
-                              href: %r{\/uploads\/test\/attachment\/file\/\d+\/spec_helper.rb}
+                              href: %r{/uploads/test/attachment/file/\d+\/spec_helper.rb}
   end
 
   scenario 'User adds two files when asks question', js: true do
@@ -32,8 +32,8 @@ feature 'Add files to question', %q{
     click_on 'Create'
 
     expect(page).to have_link 'spec_helper.rb',
-                              href: %r{\/uploads\/test\/attachment\/file\/\d+\/spec_helper.rb}
+                              href: %r{/uploads/test/attachment/file/\d+\/spec_helper.rb}
     expect(page).to have_link 'rails_helper.rb',
-                              href: %r{\/uploads\/test\/attachment\/file\/\d+\/rails_helper.rb}
+                              href: %r{/uploads/test/attachment/file/\d+\/rails_helper.rb}
   end
 end
