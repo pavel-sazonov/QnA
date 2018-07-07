@@ -40,6 +40,7 @@ gem 'cocoon'
 gem 'devise'
 gem 'gon'
 gem 'jquery-rails'
+gem 'responders'
 gem 'skim'
 gem 'slim-rails'
 

@@ -15,7 +15,6 @@ shared_examples_for "voted" do
 
     it "response with success" do
       post :vote_up, params: { id: question.id, format: :json }
-      # как правильнее проверить на заголовок ответа?
       expect(response.status).to eq 200
       expect(response).to have_http_status(:success)
     end
