@@ -1,24 +1,24 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_answer, only: %i[update destroy set_best]
-  after_action :publish_answer, only: [:create]
+  after_action :publish_answer, only: :create
 
   include Voted
 
+  respond_to :js
+
   def create
     @question = Question.find(params[:question_id])
-    @answer = @question.answers.new(answer_params)
-    @answer.user = current_user
-    @answer.save
-    gon.answer = @answer
+    respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
   end
 
   def update
     @answer.update(answer_params) if current_user.author_of?(@answer)
+    respond_with @answer
   end
 
   def destroy
-    @answer.destroy if current_user.author_of?(@answer)
+    respond_with(@answer.destroy) if current_user.author_of?(@answer)
   end
 
   def set_best
@@ -33,7 +33,7 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, attachments_attributes: [:id, :file, :_destroy])
+    params.require(:answer).permit(:body, attachments_attributes: %i[id file _destroy])
   end
 
   def publish_answer
