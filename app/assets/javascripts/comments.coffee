@@ -15,19 +15,18 @@ ready = ->
 
   # create comment
   $('form.new_comment').on 'ajax:success', (event) ->
-    xhr = $.parseJSON(event.detail[2].responseText)
-    errors = xhr.errors
-    comment = xhr.comment
+    comment = $.parseJSON(event.detail[2].responseText)
 
-    if errors
-      $('.errors').html(JST['templates/errors'](errors: errors))
+    commentType = if comment.commentable_type == 'Question' then '.question-comments' else ('#comments-answer-' + comment.commentable_id)
+    $(commentType).append(JST['templates/comment'](comment: comment))
+    $('#comment_body_create').val('')
+    $('form.new_comment').hide()
+    $('.new-comment-link').show()
 
-    if comment
-      commentType = if comment.commentable_type == 'Question' then '.question-comments' else ('#comments-answer-' + comment.commentable_id)
-      $(commentType).append(JST['templates/comment'](comment: comment))
-      $('#comment_body_create').val('')
-      $('form.new_comment').hide()
-      $('.new-comment-link').show()
+  .on 'ajax:error', (event) ->
+    errors = $.parseJSON(event.detail[2].responseText)
+    $('.errors').html(JST['templates/errors'](errors: errors))
+
 
   # delete comment
   $('.delete-comment-link').on 'ajax:success', (event) ->

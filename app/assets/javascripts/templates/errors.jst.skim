@@ -1,6 +1,6 @@
 h3
-  =>@errors.body.length
+  =>@errors.errors.body.length
   |error(s):
 ul
-  - @errors.body.forEach (message) ->
+  - @errors.errors.body.forEach (message) ->
     li=message

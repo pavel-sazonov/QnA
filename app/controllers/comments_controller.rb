@@ -3,16 +3,10 @@ class CommentsController < ApplicationController
   before_action :load_commentable, only: :create
   after_action :publish_comment, only: :create
 
-  def create
-    @comment = @commentable.comments.create(comment_params.merge(user: current_user))
+  respond_to :json, only: :create
 
-    respond_to do |format|
-      if @comment.save
-        format.json { render json: { comment: @comment } }
-      else
-        format.json { render json: { errors: @comment.errors } }
-      end
-    end
+  def create
+    respond_with(@comment = @commentable.comments.create(comment_params.merge(user: current_user)))
   end
 
   def destroy
