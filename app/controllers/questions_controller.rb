@@ -6,6 +6,8 @@ class QuestionsController < ApplicationController
 
   include Voted
 
+  respond_to :js, only: :update
+
   def index
     respond_with(@questions = Question.all)
   end
@@ -39,7 +41,7 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, attachments_attributes: [:id, :file, :_destroy])
+    params.require(:question).permit(:title, :body, attachments_attributes: %i[id file _destroy])
   end
 
   def build_answer
@@ -54,7 +56,7 @@ class QuestionsController < ApplicationController
       ApplicationController.render(
         partial: 'questions/question_for_index',
         locals: { question: @question }
-        )
       )
+    )
   end
 end

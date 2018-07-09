@@ -4,8 +4,7 @@ class CommentsController < ApplicationController
   after_action :publish_comment, only: :create
 
   def create
-    @comment = @commentable.comments.new(comment_params)
-    @comment.user = current_user
+    @comment = @commentable.comments.create(comment_params.merge(user: current_user))
 
     respond_to do |format|
       if @comment.save
