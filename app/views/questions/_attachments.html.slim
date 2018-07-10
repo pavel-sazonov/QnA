@@ -1,6 +1,5 @@
-p Attachments:
 #attachments
-  = f.fields_for :attachments do |attachment|
+  = f.fields_for :attachments, resource.attachments.new do |attachment|
     = render 'attachment_fields', f: attachment
 
     .links

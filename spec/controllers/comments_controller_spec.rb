@@ -37,8 +37,8 @@ RSpec.describe CommentsController, type: :controller do
         }
 
         response_json = JSON.parse(response.body)
-        expect(response_json['comment']['id']).to eq comment.id + 1
-        expect(response_json['comment']['body']).to eq comment.body
+        expect(response_json['id']).to eq comment.id + 1
+        expect(response_json['body']).to eq comment.body
       end
     end
 

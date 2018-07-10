@@ -14,8 +14,7 @@
     br
     = f.text_area :body, id: 'answer_body_create'
     br
-    = render 'attachments', f: f
-
+    = render 'attachments', f: f, resource: @answer
     = f.submit 'Create'
 - else
   | You must #{link_to('Login', new_user_session_path)}
