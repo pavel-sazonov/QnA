@@ -7,10 +7,13 @@ RSpec.configure do |config|
   Capybara.default_max_wait_time = 5
 
   config.include AcceptanceHelpers, type: :feature
+  config.include OmniauthMacros
 
   config.after(:all) do
     if Rails.env.test?
       FileUtils.rm_rf(Dir["#{Rails.root}/public/uploads/test/attachment/"])
     end
   end
+
+  OmniAuth.config.test_mode = true
 end
