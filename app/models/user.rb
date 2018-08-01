@@ -17,28 +17,14 @@ class User < ApplicationRecord
 
     email = auth.info[:email]
     user = User.where(email: email).first
-    # if user
-    #   user.create_authorization(auth)
-    # else
-    #   password = Devise.friendly_token[0, 20]
-    #   user = User.create!(email: email, password: password, password_confirmation: password)
-    #   user.create_authorization(auth)
-    # end
 
-    # можно так отрефакторить?
-    # rubocop просит вынести user.create_authorization(auth) за пределы условия
     unless user
       password = Devise.friendly_token[0, 20]
       user = User.create!(email: email, password: password, password_confirmation: password)
     end
 
-    user.create_authorization(auth)
-
+    user.authorizations.create(provider: auth.provider, uid: auth.uid)
     user
-  end
-
-  def create_authorization(auth)
-    authorizations.create(provider: auth.provider, uid: auth.uid)
   end
 
   def author_of?(item)

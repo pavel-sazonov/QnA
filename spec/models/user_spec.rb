@@ -25,18 +25,20 @@ RSpec.describe User do
 
     context "user hasn't authorization" do
       context "user exists" do
-        let(:auth) { OmniAuth::AuthHash.new(
-          provider: 'github',
-          uid: '123456',
-          info: { email: user.email }
-          ) }
+        let(:auth) do
+          OmniAuth::AuthHash.new(
+            provider: 'github',
+            uid: '123456',
+            info: { email: user.email }
+          )
+        end
 
         it "doesn't create user" do
-          expect{ User.find_for_oauth(auth) }.to_not change(User, :count)
+          expect { User.find_for_oauth(auth) }.to_not change(User, :count)
         end
 
         it "creates authorization for user" do
-          expect{ User.find_for_oauth(auth) }.to change(user.authorizations, :count).by(1)
+          expect { User.find_for_oauth(auth) }.to change(user.authorizations, :count).by(1)
         end
 
         it "creates authorization with provider and uid" do
