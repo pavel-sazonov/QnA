@@ -8,37 +8,53 @@
 
     .answer-vote
       => "Rating: "
-
-      - if current_user && !current_user.author_of?(answer)
-        => link_to '+', vote_up_answer_path(answer), class: 'vote-up-link', method: :post, remote: true, data: { type: :json }
-
       span.answer-rating id="answer-rating-#{answer.id}"
-        = answer.rating
+        => answer.rating
 
-      '
+      .answer-vote-links  id="answer-vote-links-#{answer.id}"
+        -if can? :vote_up, answer
+          => link_to '+',
+                     vote_up_answer_path(answer),
+                     class: "vote-up-link",
+                     method: :post,
+                     remote: true,
+                     data: { type: :json }
 
-      - if current_user && !current_user.author_of?(answer)
-        => link_to '-', vote_down_answer_path(answer), class: 'vote-down-link', method: :post, remote: true, data: { type: :json }
+        -if can? :vote_down, answer
+          => link_to '-',
+                     vote_down_answer_path(answer),
+                     class: "vote-down-link",
+                     method: :post,
+                     remote: true,
+                     data: { type: :json }
 
-      - if current_user && !current_user.author_of?(answer)
-        = link_to 'cancel', cancel_vote_answer_path(answer), class: 'vote-cancel-link', method: :delete, remote: :true, data: { type: :json }
+
+        -if can? :cancel_vote, answer
+          = link_to 'cancel',
+                    cancel_vote_answer_path(answer),
+                    class: 'vote-cancel-link',
+                    method: :delete,
+                    remote: :true,
+                    data: { type: :json }
 
     .answer-links
-      - if current_user&.author_of?(answer.question) && !answer.best?
+      - if can?(:set_best, answer) && !answer.best?
         => link_to 'Best', set_best_answer_path(answer), method: :patch, remote: true
 
-      - if current_user&.author_of?(answer)
+      -if can? :update, answer
         => link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+
+      -if can? :destroy, answer
         = link_to 'Delete', answer_path(answer), method: :delete, remote: true
 
-        p
-          = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
-            = f.label :body_edit, 'Answer'
-            br
-            = f.text_area :body, id: 'answer_body_edit'
-            br
-            = f.submit 'Save'
-            = link_to 'cancel', '', class: 'cancel-edit', data: { answer_id: answer.id }
+      p
+        = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
+          = f.label :body_edit, 'Answer'
+          br
+          = f.text_area :body, id: 'answer_body_edit'
+          br
+          = f.submit 'Save'
+          = link_to 'cancel', '', class: 'cancel-edit', data: { answer_id: answer.id }
 
     .attachments
       =render 'shared/attachments_list', resource: answer

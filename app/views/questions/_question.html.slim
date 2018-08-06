@@ -4,37 +4,50 @@ p= question.body
 -if question.attachments.any?
   =render 'shared/attachments_list', resource: question
 
-p.question-vote
+.question-vote
   => "Rating: "
-
-  - if current_user && !current_user.author_of?(question)
-    => link_to '+', vote_up_question_path, class: 'vote-up-link', method: :post, remote: true, data: { type: :json }
 
   span.question-rating
     => question.rating
 
-  - if current_user && !current_user.author_of?(question)
-    = link_to '-', vote_down_question_path, class: 'vote-down-link', method: :post, remote: true, data: { type: :json }
+  .question-vote-links  id="question-vote-links-#{question.id}"
+    -if can? :vote_up, question
+      => link_to '+',
+                 vote_up_question_path,
+                 class: 'vote-up-link',
+                 method: :post,
+                 remote: true,
+                 data: { type: :json }
 
-  - if current_user && !current_user.author_of?(question)
-    br
-    = link_to 'cancel vote', cancel_vote_question_path, class: 'vote-cancel-link', method: :delete, remote: :true, data: { type: :json }
+    - if can? :vote_down, question
+      = link_to '-',
+                vote_down_question_path,
+                class: 'vote-down-link',
+                method: :post,
+                remote: true,
+                data: { type: :json }
 
-- if current_user&.author_of?(question)
+    - if can? :cancel_vote, question
+      = link_to 'cancel vote',
+                cancel_vote_question_path,
+                class: 'vote-cancel-link',
+                method: :delete,
+                remote: :true,
+                data: { type: :json }
 
-  => link_to 'Edit', '', class: 'edit-question-link'
-  = link_to 'Delete', question_path(question), method: :delete
+=> link_to('Edit', '', class: 'edit-question-link') if can? :update, question
+= link_to('Delete', question_path(question), method: :delete) if can? :destroy, question
 
-  p= form_for question, remote: true do |f|
-    = f.label :title
-    br
-    = f.text_field :title
-    br
-    = f.label :body
-    br
-    = f.text_area :body
-    br
-    = f.submit 'Save'
+p= form_for question, remote: true do |f|
+  = f.label :title
+  br
+  = f.text_field :title
+  br
+  = f.label :body
+  br
+  = f.text_area :body
+  br
+  = f.submit 'Save'
 
 .question-comments
   -if question.comments.any?

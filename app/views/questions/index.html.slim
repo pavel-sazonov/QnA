@@ -1,5 +1,8 @@
 .questions-list
   - @questions.each do |question|
     =render 'question_for_index', question: question
-
-p= link_to 'Ask question', new_question_path
+-if can?(:create, Question)
+  p= link_to 'Ask question', new_question_path
+- else
+  | You must #{link_to('Login', new_user_session_path)}
+    or #{link_to('Register', new_user_session_path)} to ask the question.

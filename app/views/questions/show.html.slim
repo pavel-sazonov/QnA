@@ -17,5 +17,5 @@
     = render 'attachments', f: f, resource: @answer
     = f.submit 'Create'
 - else
-  | You must #{link_to('Login', new_user_session_path)}
+  p You must #{link_to('Login', new_user_session_path)}
     or #{link_to('Register', new_user_session_path)} to answer the question.

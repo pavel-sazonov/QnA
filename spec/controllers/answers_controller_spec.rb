@@ -79,9 +79,9 @@ RSpec.describe AnswersController, type: :controller do
           .to_not change(Answer, :count)
       end
 
-      it 'render updated template' do
+      it 'does not render updated template' do
         delete :destroy, params: { id: answer, format: :js }
-        expect(response).to render_template :destroy
+        expect(response).to_not render_template :destroy
       end
     end
   end

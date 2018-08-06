@@ -4,6 +4,7 @@ class CommentsController < ApplicationController
   after_action :publish_comment, only: :create
 
   respond_to :json, only: :create
+  authorize_resource
 
   def create
     respond_with(@comment = @commentable.comments.create(comment_params.merge(user: current_user)))
@@ -11,11 +12,12 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment = Comment.find(params[:id])
+    comment_id = @comment.id
+    # почему-то тут не срабатывает без дополнительного if can?
+    @comment.destroy if can? :destroy, @comment
 
-    if current_user.author_of?(@comment)
-      respond_to do |format|
-        format.json { render json: { comment_id: @comment.destroy.id } }
-      end
+    respond_to do |format|
+      format.json { render json: { comment_id: comment_id } }
     end
   end
 

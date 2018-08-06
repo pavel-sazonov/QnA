@@ -6,17 +6,22 @@ module Voted
   end
 
   def vote_up
-    @vote = current_user.vote(@votable, 1)
+    authorize! :vote_up, @votable
+    current_user.vote(@votable, 1)
+
     respond_json
   end
 
   def vote_down
-    @vote = current_user.vote(@votable, -1)
+    authorize! :vote_down, @votable
+    current_user.vote(@votable, -1)
     respond_json
   end
 
   def cancel_vote
-    @votable.voted_by(current_user).destroy_all
+    authorize! :cancel_vote, @votable
+    @votable.votes.where(user_id: current_user.id).first.destroy
+
     respond_json
   end
 

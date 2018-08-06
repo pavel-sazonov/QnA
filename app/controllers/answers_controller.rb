@@ -4,8 +4,8 @@ class AnswersController < ApplicationController
   after_action :publish_answer, only: :create
 
   include Voted
-
   respond_to :js
+  authorize_resource
 
   def create
     @question = Question.find(params[:question_id])
@@ -13,17 +13,17 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params) if current_user.author_of?(@answer)
+    @answer.update(answer_params)
     respond_with @answer
   end
 
   def destroy
-    respond_with(@answer.destroy) if current_user.author_of?(@answer)
+    respond_with(@answer.destroy)
   end
 
   def set_best
     @question = @answer.question
-    @answer.set_best if current_user.author_of?(@question)
+    @answer.set_best
   end
 
   private
