@@ -20,7 +20,7 @@ p= question.body
                  data: { type: :json }
 
     - if can? :vote_down, question
-      = link_to '-',
+      => link_to '-',
                 vote_down_question_path,
                 class: 'vote-down-link',
                 method: :post,

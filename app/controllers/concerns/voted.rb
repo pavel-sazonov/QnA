@@ -6,20 +6,20 @@ module Voted
   end
 
   def vote_up
-    authorize! :vote_up, @votable
+    authorize! :vote_up, @votable, message: "Unable to vote."
     current_user.vote(@votable, 1)
 
     respond_json
   end
 
   def vote_down
-    authorize! :vote_down, @votable
+    authorize! :vote_down, @votable, message: "Unable to vote."
     current_user.vote(@votable, -1)
     respond_json
   end
 
   def cancel_vote
-    authorize! :cancel_vote, @votable
+    authorize! :cancel_vote, @votable, message: "Unable to cancel vote."
     @votable.votes.where(user_id: current_user.id).first.destroy
 
     respond_json

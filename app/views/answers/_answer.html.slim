@@ -39,13 +39,21 @@
 
     .answer-links
       - if can?(:set_best, answer) && !answer.best?
-        => link_to 'Best', set_best_answer_path(answer), method: :patch, remote: true
+        => link_to 'Best',
+                    set_best_answer_path(answer),
+                    class: 'best-answer-link',
+                    method: :patch,
+                    remote: true
 
       -if can? :update, answer
         => link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
 
       -if can? :destroy, answer
-        = link_to 'Delete', answer_path(answer), method: :delete, remote: true
+        = link_to 'Delete',
+                  answer_path(answer),
+                  class: 'delete-answer-link',
+                  method: :delete,
+                  remote: true
 
       p
         = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|

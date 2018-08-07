@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :load_commentable, only: :create
+  before_action :load_comment, only: :destroy
   after_action :publish_comment, only: :create
 
   respond_to :json, only: :create
@@ -11,13 +12,8 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @comment = Comment.find(params[:id])
-    comment_id = @comment.id
-    # почему-то тут не срабатывает без дополнительного if can?
-    @comment.destroy if can? :destroy, @comment
-
     respond_to do |format|
-      format.json { render json: { comment_id: comment_id } }
+      format.json { render json: { comment_id: @comment.destroy.id } }
     end
   end
 
@@ -26,6 +22,10 @@ class CommentsController < ApplicationController
   def load_commentable
     klass = [Question, Answer].detect {|c| params["#{c.name.underscore}_id"] }
     @commentable = klass.find(params["#{klass.name.underscore}_id"])
+  end
+
+  def load_comment
+    @comment = Comment.find(params[:id])
   end
 
   def comment_params

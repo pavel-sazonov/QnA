@@ -9,7 +9,11 @@ class ApplicationController < ActionController::Base
   check_authorization unless: :devise_controller?
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, alert: exception.message
+    respond_to do |format|
+      format.json { render json: { errors: exception.message }, status: :forbidden }
+      format.js { head :forbidden }
+      format.html { flash[:alert] = exception.message }
+    end
   end
 
   private
