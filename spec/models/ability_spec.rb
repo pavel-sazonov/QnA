@@ -52,14 +52,17 @@ RSpec.describe Ability do
     context "vote" do
       let(:question) { create :question, user: user }
       let(:other_question) { create :question, user: other }
-      let(:vote) { create :vote, user: user, votable: question }
-      let(:other_vote) { create :vote, user: other, votable: other_question }
 
-      it { should be_able_to %i[vote_up vote_down], other_question }
+      it { should be_able_to %i[vote_up vote_down], other_question, user_id: user.id }
       it { should_not be_able_to %i[vote_up vote_down], question }
 
-      it { should be_able_to :cancel_vote, vote, user_id: user.id }
-      it { should_not be_able_to :cancel_vote, other_vote, user_id: user.id }
+      context "cancel_vote" do
+        let!(:vote) { create :vote, user: user, votable: other_question }
+        let!(:other_vote) { create :vote, user: other, votable: question }
+
+        it { should be_able_to :cancel_vote, other_question, user_id: user.id }
+        it { should_not be_able_to :cancel_vote, question, user_id: user.id }
+      end
     end
   end
 end
