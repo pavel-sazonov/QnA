@@ -32,10 +32,6 @@ class User < ApplicationRecord
   end
 
   def vote(resource, value)
-    if !author_of?(resource) && resource.voted_by(self).empty?
-      votes.create(votable: resource, value: value)
-    else
-      false
-    end
+    votes.create(votable: resource, value: value)
   end
 end

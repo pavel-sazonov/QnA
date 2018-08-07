@@ -1,5 +1,5 @@
 - resource.attachments.each do |a|
     div class="attachment-#{a.id}"
       => link_to a.file.identifier, a.file.url
-      - if current_user&.author_of?(resource)
+      - if can? :destroy, a
         = link_to 'Delete attachment', attachment_path(a), method: :delete, remote: true

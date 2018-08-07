@@ -33,6 +33,9 @@ ready = ->
     received_data = $.parseJSON(event.detail[2].responseText)
     $('#comment-' + received_data.comment_id).remove()
 
+  .on 'ajax:error', (event) ->
+    $('.errors').html('Unable to delete this comment')
+
 
   App.cable.subscriptions.create('CommentsChannel', {
     connected: ->

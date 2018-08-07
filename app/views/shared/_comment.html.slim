@@ -2,7 +2,7 @@
   p
   =>comment.body
 
-  -if current_user&.author_of?(comment)
+  -if can? :destroy, comment
     =link_to 'delete',
              comment_path(comment),
              class: 'delete-comment-link',

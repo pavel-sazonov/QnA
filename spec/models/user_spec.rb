@@ -108,14 +108,5 @@ RSpec.describe User do
       user.vote(question, 1)
       expect(user.votes.last.value).to eq 1
     end
-
-    it "doesn't create new vote if user has already voted" do
-      user.vote(question, 1)
-      expect { user.vote(question, 1) }.to_not change(Vote, :count)
-    end
-
-    it "doesn't create new vote if user is author of resouce" do
-      expect { author.vote(question, 1) }.to_not change(Vote, :count)
-    end
   end
 end
