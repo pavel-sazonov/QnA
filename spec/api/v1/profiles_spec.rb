@@ -71,6 +71,8 @@ describe 'Profile API' do
         expect(response.body).to have_json_size 3
       end
 
+      # здесь двойная конвертация json-hash-json, так как у хеша из json короче строка даты
+      # в created_at
       %w[email id created_at updated_at].each do |attr|
         it "each user contains #{attr}" do
           users.each_with_index do |user, i|
@@ -80,19 +82,17 @@ describe 'Profile API' do
         end
       end
 
-      %w[email id created_at updated_at].each do |attr|
-        it "each user does not contains me #{attr}" do
-          users.each_index do |i|
-            expect(@response_json[i].to_json)
-              .to_not be_json_eql(me.send(attr.to_sym).to_json).at_path(attr)
-          end
+      it "other users do not include me" do
+        users.each_index do |i|
+          expect(@response_json[i]['email'])
+            .to_not eq me.email
         end
       end
 
       %w[password encrypted_password].each do |attr|
         it "each user does not contain #{attr}" do
           users.each_index do |i|
-            expect(@response_json[i].to_json).to_not have_json_path(attr)
+            expect(@response_json[i]).to_not eq me.send(attr.to_sym)
           end
         end
       end
