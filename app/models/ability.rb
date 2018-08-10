@@ -19,5 +19,9 @@ class Ability
     can :cancel_vote, [Question, Answer] do |votable|
       votable.votes.where(user_id: user.id).present?
     end
+
+    return unless user.admin?
+
+    can :manage, :all
   end
 end
