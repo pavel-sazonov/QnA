@@ -40,15 +40,15 @@ describe 'Profile API' do
     end
   end
 
-  describe 'GET /other_users' do
+  describe 'GET /index' do
     context 'unauthorized' do
       it 'returns 401 status if there is no access token' do
-        get '/api/v1/profiles/other_users', params: { format: :json }
+        get '/api/v1/profiles', params: { format: :json }
         expect(response.status).to eq 401
       end
 
       it 'returns 401 status if access token is invalid' do
-        get '/api/v1/profiles/other_users', params: { format: :json, access_token: '1234' }
+        get '/api/v1/profiles', params: { format: :json, access_token: '1234' }
         expect(response.status).to eq 401
       end
     end
@@ -57,13 +57,12 @@ describe 'Profile API' do
       let!(:users) { create_list :user, 3 }
 
       before do
-        get '/api/v1/profiles/other_users',
+        get '/api/v1/profiles',
             params: { format: :json, access_token: access_token.token }
         @response_json = JSON.parse(response.body)
       end
 
       it 'returns 200 status' do
-        @response_json.each_with_index { |user, i| puts "#{i}: #{user}" }
         expect(response).to be_successful
       end
 
@@ -71,8 +70,6 @@ describe 'Profile API' do
         expect(response.body).to have_json_size 3
       end
 
-      # здесь двойная конвертация json-hash-json, так как у хеша из json короче строка даты
-      # в created_at
       %w[email id created_at updated_at].each do |attr|
         it "each user contains #{attr}" do
           users.each_with_index do |user, i|
