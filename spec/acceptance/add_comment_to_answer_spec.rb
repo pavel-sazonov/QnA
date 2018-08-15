@@ -14,10 +14,10 @@ feature 'Add comment to answer', %q(
 
     within '.answers' do
       click_on 'add comment'
-      fill_in 'Your comment', with: 'comment'
+      fill_in 'Your comment', with: 'comment-example'
       click_on 'Create'
 
-      expect(page).to have_content 'comment'
+      expect(page).to have_content 'comment-example'
       expect(page).to have_link 'delete', href: %r{/comments/\d+}
     end
   end
