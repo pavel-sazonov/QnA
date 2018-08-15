@@ -5,8 +5,8 @@ class Ability
     can :read, :all
     return unless user
 
+    can :me, User
     can :create, [Question, Answer, Attachment, Comment]
-
     can %i[update destroy], [Question, Answer], user_id: user.id
     can :destroy, Comment, user_id: user.id
     can :destroy, Attachment, attachable: { user_id: user.id }

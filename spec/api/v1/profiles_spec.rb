@@ -77,17 +77,18 @@ describe 'Profile API' do
         end
       end
 
-      it "other users do not include me" do
+      it 'other users do not include me' do
         users.each_index do |i|
           expect(response.body)
-           .to_not be_json_eql(me.email.to_json).at_path("#{i}/email")
+            .to_not be_json_eql(me.email.to_json).at_path("#{i}/email")
         end
       end
 
       %w[password encrypted_password].each do |attr|
         it "each user does not contain #{attr}" do
           users.each_index do |i|
-            expect(@response_json[i]).to_not eq me.send(attr.to_sym)
+            expect(response.body)
+              .to_not be_json_eql(me.send(attr.to_sym).to_json).at_path "#{i}"
           end
         end
       end
