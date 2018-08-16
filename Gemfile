@@ -34,6 +34,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 # Reduces boot times through caching; required in config/boot.rb
+gem 'active_model_serializers'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'cancancan'
 gem 'carrierwave'
@@ -42,6 +43,8 @@ gem 'devise'
 gem 'doorkeeper', '4.2.6'
 gem 'gon'
 gem 'jquery-rails'
+gem 'oj'
+gem 'oj_mimic_json'
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-vkontakte'

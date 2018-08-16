@@ -40,15 +40,15 @@ describe 'Profile API' do
     end
   end
 
-  describe 'GET /other_users' do
+  describe 'GET /index' do
     context 'unauthorized' do
       it 'returns 401 status if there is no access token' do
-        get '/api/v1/profiles/other_users', params: { format: :json }
+        get '/api/v1/profiles', params: { format: :json }
         expect(response.status).to eq 401
       end
 
       it 'returns 401 status if access token is invalid' do
-        get '/api/v1/profiles/other_users', params: { format: :json, access_token: '1234' }
+        get '/api/v1/profiles', params: { format: :json, access_token: '1234' }
         expect(response.status).to eq 401
       end
     end
@@ -57,13 +57,11 @@ describe 'Profile API' do
       let!(:users) { create_list :user, 3 }
 
       before do
-        get '/api/v1/profiles/other_users',
+        get '/api/v1/profiles',
             params: { format: :json, access_token: access_token.token }
-        @response_json = JSON.parse(response.body)
       end
 
       it 'returns 200 status' do
-        @response_json.each_with_index { |user, i| puts "#{i}: #{user}" }
         expect(response).to be_successful
       end
 
@@ -71,28 +69,26 @@ describe 'Profile API' do
         expect(response.body).to have_json_size 3
       end
 
-      # здесь двойная конвертация json-hash-json, так как у хеша из json короче строка даты
-      # в created_at
       %w[email id created_at updated_at].each do |attr|
-        it "each user contains #{attr}" do
-          users.each_with_index do |user, i|
-            expect(@response_json[i].to_json)
-              .to be_json_eql(user.send(attr.to_sym).to_json).at_path(attr)
-          end
+        it "question object contains #{attr}" do
+          user = users.first
+          expect(response.body)
+            .to be_json_eql(user.send(attr.to_sym).to_json).at_path("0/#{attr}")
         end
       end
 
-      it "other users do not include me" do
+      it 'other users do not include me' do
         users.each_index do |i|
-          expect(@response_json[i]['email'])
-            .to_not eq me.email
+          expect(response.body)
+            .to_not be_json_eql(me.email.to_json).at_path("#{i}/email")
         end
       end
 
       %w[password encrypted_password].each do |attr|
         it "each user does not contain #{attr}" do
           users.each_index do |i|
-            expect(@response_json[i]).to_not eq me.send(attr.to_sym)
+            expect(response.body)
+              .to_not be_json_eql(me.send(attr.to_sym).to_json).at_path "#{i}"
           end
         end
       end

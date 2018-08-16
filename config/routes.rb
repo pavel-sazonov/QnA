@@ -26,11 +26,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resource :profiles do
-        collection do
-          get :me
-          get :other_users
-        end
+      resources :profiles, only: :index do
+        get :me, on: :collection
+      end
+      resources :questions, only: %i[index show create] do
+        resources :answers, only: %i[index show create], shallow: true
       end
     end
   end
