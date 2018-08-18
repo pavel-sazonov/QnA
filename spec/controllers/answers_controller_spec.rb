@@ -5,6 +5,9 @@ RSpec.describe AnswersController, type: :controller do
   let(:another_user) { create(:user) }
   let(:question) { create(:question, user: user) }
   let!(:answer) { create(:answer, question: question, user: user) }
+  let(:votable) { create :answer }
+
+  it_behaves_like "Voted"
 
   describe 'POST #create' do
     before { sign_in(user) }

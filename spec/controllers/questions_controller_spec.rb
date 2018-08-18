@@ -4,11 +4,12 @@ RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
   let(:another_user) { create(:user) }
   let(:question) { create(:question, user: user) }
+  let(:votable) { create :question }
 
-  it_behaves_like "voted"
+  it_behaves_like "Voted"
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 2, user: user) }
+    let(:questions) { create_list(:question, 2) }
 
     before { get :index }
 
@@ -17,8 +18,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     it 'renders index view' do
-      get :index
-
       expect(response).to render_template :index
     end
   end

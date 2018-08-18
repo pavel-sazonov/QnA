@@ -1,6 +1,6 @@
 require "rails_helper"
 
-shared_examples_for "votable" do
+shared_examples_for "Votable" do
   it { should have_many(:votes).dependent(:destroy) }
 
   let(:users) { create_list(:user, 3) }

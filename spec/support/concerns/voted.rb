@@ -1,63 +1,31 @@
 require "rails_helper"
 
-shared_examples_for "voted" do
-  let(:author) { create(:user) }
-  let(:user) { create(:user) }
-  let(:question) { create(:question, user: author) }
-
+shared_examples_for "Voted" do
+  let(:params) { { id: votable.id, format: :json } }
   before { sign_in user }
 
   describe 'POST #vote_up' do
-    it 'saves a new user vote in the database' do
-      expect { post :vote_up, params: { id: question.id, format: :json } }
-        .to change(user.votes, :count).by(1)
-    end
+    let(:request) { post :vote_up, params: params }
+    let(:rating) { 1 }
+    let(:changed_users_votes_count) { 1 }
 
-    it "response with success" do
-      post :vote_up, params: { id: question.id, format: :json }
-      expect(response.status).to eq 200
-      expect(response).to have_http_status(:success)
-    end
-
-    it "response with proper json" do
-      post :vote_up, params: { id: question.id, format: :json }
-      expect(response.body).to eq "{\"rating\":1,\"votable_id\":#{question.id}}"
-    end
+    it_behaves_like 'Voted action'
   end
 
   describe 'POST #vote_down' do
-    it 'saves a new user vote in the database' do
-      expect { post :vote_down, params: { id: question.id, format: :json } }
-        .to change(user.votes, :count).by(1)
-    end
+    let(:request) { post :vote_down, params: params }
+    let(:rating) { -1 }
+    let(:changed_users_votes_count) { 1 }
 
-    it "response with success" do
-      post :vote_down, params: { id: question.id, format: :json }
-      expect(response.status).to eq 200
-    end
-
-    it "response with proper json" do
-      post :vote_down, params: { id: question.id, format: :json }
-      expect(response.body).to eq "{\"rating\":-1,\"votable_id\":#{question.id}}"
-    end
+    it_behaves_like 'Voted action'
   end
 
   describe 'DELETE #cancel_vote' do
-    before { post :vote_up, params: { id: question.id, format: :json } }
+    let(:request) { delete :cancel_vote, params: params }
+    let(:rating) { 0 }
+    let(:changed_users_votes_count) { -1 }
+    let!(:vote) { create :vote, user: user, votable: votable }
 
-    it 'deletes user vote from the database' do
-      expect { post :cancel_vote, params: { id: question.id, format: :json } }
-        .to change(user.votes, :count).by(-1)
-    end
-
-    it "response with success" do
-      post :cancel_vote, params: { id: question.id, format: :json }
-      expect(response.status).to eq 200
-    end
-
-    it "response with proper json" do
-      post :cancel_vote, params: { id: question.id, format: :json }
-      expect(response.body).to eq "{\"rating\":0,\"votable_id\":#{question.id}}"
-    end
+    it_behaves_like 'Voted action'
   end
 end
