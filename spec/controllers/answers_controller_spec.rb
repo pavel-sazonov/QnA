@@ -60,33 +60,24 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    let(:do_request) { delete :destroy, params: { id: answer, format: :js } }
+
     context 'Author tries delete answer' do
       before { sign_in(user) }
 
       it 'deletes answer' do
-        expect { delete :destroy, params: { id: answer, format: :js } }
+        expect { do_request }
           .to change(user.answers, :count).by(-1)
       end
 
       it 'render updated template' do
-        delete :destroy, params: { id: answer, format: :js }
+        do_request
         expect(response).to render_template :destroy
       end
     end
 
-    context 'Non-author tries delete answer' do
-      before { sign_in(another_user) }
-
-      it 'does not delete answer' do
-        expect { delete :destroy, params: { id: answer, format: :js } }
-          .to_not change(Answer, :count)
-      end
-
-      it 'does not render updated template' do
-        delete :destroy, params: { id: answer, format: :js }
-        expect(response).to_not render_template :destroy
-      end
-    end
+    let(:model) { Question }
+    it_behaves_like 'Deletable'
   end
 
   describe 'PATCH #update' do
