@@ -10,12 +10,9 @@ describe 'Question API' do
     it_behaves_like 'API Authenticable'
 
     context 'authorized' do
-      before do
-        get "/api/v1/questions/#{question.id}/answers",
-            params: { format: :json, access_token: access_token.token }
-      end
-
       it_behaves_like 'API successfulable'
+
+      before { do_request access_token: access_token.token }
 
       it 'returns list of answers' do
         expect(response.body).to have_json_size(2).at_path('answers')
@@ -40,11 +37,9 @@ describe 'Question API' do
     context 'authorized' do
       let!(:comment) { create :comment, commentable: answer }
       let!(:attachment) { create :attachment, attachable: answer }
+      let(:path_resource) { 'answer' }
 
-      before do
-        get "/api/v1/answers/#{answer.id}",
-            params: { format: :json, access_token: access_token.token }
-      end
+      before { do_request access_token: access_token.token }
 
       it_behaves_like 'API successfulable'
 
@@ -55,23 +50,8 @@ describe 'Question API' do
         end
       end
 
-      context 'comments' do
-        %w[id body created_at updated_at].each do |attr|
-          it "contains #{attr}" do
-            expect(response.body)
-              .to be_json_eql(comment.send(attr.to_sym).to_json)
-              .at_path("answer/comments/0/#{attr}")
-          end
-        end
-      end
-
-      context 'attachments' do
-        it 'contains file_url' do
-          expect(response.body)
-            .to be_json_eql(attachment.file.url.to_json)
-            .at_path("answer/attachments/0/file_url")
-        end
-      end
+      it_behaves_like 'API Commentable'
+      it_behaves_like 'API Attachable'
     end
 
     def do_request(options = {})
@@ -84,13 +64,7 @@ describe 'Question API' do
 
     context 'authorized' do
       context 'with valid attributes' do
-        before do
-          post "/api/v1/questions/#{question.id}/answers", params: {
-            format: :json,
-            answer: attributes_for(:answer),
-            access_token: access_token.token
-          }
-        end
+        before { do_request answer: attributes_for(:answer), access_token: access_token.token }
 
         it 'returns 201 status' do
           expect(response.status).to eq 201
@@ -105,13 +79,7 @@ describe 'Question API' do
       end
 
       context 'with invalid attributes' do
-        before do
-          post "/api/v1/questions/#{question.id}/answers", params: {
-            format: :json,
-            answer: attributes_for(:invalid_answer),
-            access_token: access_token.token
-          }
-        end
+        before { do_request answer: attributes_for(:invalid_answer), access_token: access_token.token }
 
         it 'returns 422 status' do
           expect(response.status).to eq 422

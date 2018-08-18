@@ -8,9 +8,7 @@ describe 'Profile API' do
     it_behaves_like 'API Authenticable'
 
     context 'authorized' do
-      before do
-        get '/api/v1/profiles/me', params: { format: :json, access_token: access_token.token }
-      end
+      before { do_request access_token: access_token.token }
 
       it_behaves_like 'API successfulable'
 
@@ -33,16 +31,12 @@ describe 'Profile API' do
   end
 
   describe 'GET /index' do
-
     it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let!(:users) { create_list :user, 3 }
 
-      before do
-        get '/api/v1/profiles',
-            params: { format: :json, access_token: access_token.token }
-      end
+      before { do_request access_token: access_token.token }
 
       it_behaves_like 'API successfulable'
 
