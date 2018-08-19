@@ -5,26 +5,12 @@ describe 'Profile API' do
   let(:access_token) { create :access_token, resource_owner_id: me.id }
 
   describe 'GET /me' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access token' do
-        get '/api/v1/profiles/me', params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access token is invalid' do
-        get '/api/v1/profiles/me', params: { format: :json, access_token: '1234' }
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
-      before do
-        get '/api/v1/profiles/me', params: { format: :json, access_token: access_token.token }
-      end
+      before { do_request access_token: access_token.token }
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'API successfulable'
 
       %w[email id created_at updated_at].each do |attr|
         it "contains #{attr}" do
@@ -38,32 +24,21 @@ describe 'Profile API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get '/api/v1/profiles/me', params: { format: :json }.merge(options)
+    end
   end
 
   describe 'GET /index' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access token' do
-        get '/api/v1/profiles', params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access token is invalid' do
-        get '/api/v1/profiles', params: { format: :json, access_token: '1234' }
-        expect(response.status).to eq 401
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let!(:users) { create_list :user, 3 }
 
-      before do
-        get '/api/v1/profiles',
-            params: { format: :json, access_token: access_token.token }
-      end
+      before { do_request access_token: access_token.token }
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'API successfulable'
 
       it 'returns json with 3 users' do
         expect(response.body).to have_json_size 3
@@ -88,10 +63,14 @@ describe 'Profile API' do
         it "each user does not contain #{attr}" do
           users.each_index do |i|
             expect(response.body)
-              .to_not be_json_eql(me.send(attr.to_sym).to_json).at_path "#{i}"
+              .to_not be_json_eql(me.send(attr.to_sym).to_json).at_path(i.to_s)
           end
         end
       end
+    end
+
+    def do_request(options = {})
+      get '/api/v1/profiles', params: { format: :json }.merge(options)
     end
   end
 end
