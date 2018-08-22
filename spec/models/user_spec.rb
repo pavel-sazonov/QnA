@@ -10,11 +10,12 @@ RSpec.describe User do
   it { should validate_presence_of :password }
 
   let(:author) { create(:user) }
-  let!(:user) { create(:user) }
   let(:question) { create(:question, user: author) }
+  let(:user) { create(:user) }
 
   describe ".find_for_oauth" do
     let(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456') }
+    let!(:user) { create :user }
 
     context "user has authorization" do
       it "returns the user" do
@@ -107,6 +108,15 @@ RSpec.describe User do
     it "set value of created user's vote" do
       user.vote(question, 1)
       expect(user.votes.last.value).to eq 1
+    end
+  end
+
+  describe '.send_daily_digest' do
+    let(:users) { create_list :user, 2 }
+
+    it 'should send daily digest to all users' do
+      users.each { |user| expect(DailyMailer).to receive(:digest).with(user).and_call_original }
+      User.send_daily_digest
     end
   end
 end

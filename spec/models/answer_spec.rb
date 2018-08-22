@@ -38,4 +38,19 @@ RSpec.describe Answer, type: :model do
   end
 
   it { should accept_nested_attributes_for :attachments }
+
+  describe 'reputation' do
+    subject { build :answer }
+
+    it 'should calculate reputation after create' do
+      expect(CalculateReputationJob).to receive(:perform_later).with subject
+      subject.save!
+    end
+
+    it 'should not calculate reputation after update' do
+      subject.save!
+      expect(CalculateReputationJob).to_not receive(:perform_later).with subject
+      subject.update body: '12345'
+    end
+  end
 end

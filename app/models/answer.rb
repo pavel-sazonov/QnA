@@ -18,4 +18,12 @@ class Answer < ApplicationRecord
       update!(best: true)
     end
   end
+
+  after_create :calculate_rating
+
+  private
+
+  def calculate_rating
+    CalculateReputationJob.perform_later self
+  end
 end
