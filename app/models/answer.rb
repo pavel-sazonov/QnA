@@ -19,11 +19,11 @@ class Answer < ApplicationRecord
     end
   end
 
-  after_create :calculate_rating
+  after_create :send_question_subscription
 
   private
 
-  def calculate_rating
-    CalculateReputationJob.perform_later self
+  def send_question_subscription
+    QuestionSubscriptionJob.perform_later(question.user, question)
   end
 end
