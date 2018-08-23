@@ -27,10 +27,6 @@ class User < ApplicationRecord
     user
   end
 
-  def self.send_daily_digest
-    find_each { |user| DailyMailer.digest(user).deliver_later }
-  end
-
   def author_of?(item)
     id == item.user_id
   end

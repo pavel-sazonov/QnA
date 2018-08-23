@@ -10,4 +10,6 @@ class Question < ApplicationRecord
   validates :body, length: { minimum: 5 }, allow_nil: true
 
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
+
+  scope :last_day, -> { where('created_at >= ?', (Date.today - 1.day).to_time) }
 end
