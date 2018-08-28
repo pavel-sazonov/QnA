@@ -43,6 +43,7 @@ gem 'devise'
 gem 'doorkeeper', '4.2.6'
 gem 'gon'
 gem 'jquery-rails'
+gem 'mysql2'
 gem 'oj'
 gem 'oj_mimic_json'
 gem 'omniauth'
@@ -53,6 +54,7 @@ gem 'sidekiq'
 gem 'sinatra', require: nil
 gem 'skim'
 gem 'slim-rails'
+gem 'thinking-sphinx'
 gem 'whenever'
 
 group :development, :test do
