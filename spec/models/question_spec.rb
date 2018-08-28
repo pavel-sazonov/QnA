@@ -23,4 +23,14 @@ RSpec.describe Question, type: :model do
 
   it { should have_db_index(:user_id) }
   it { should accept_nested_attributes_for :attachments }
+
+  describe '#subscribe_author' do
+    let(:user) { create(:user) }
+    let!(:question) { create :question, user: user }
+
+    it 'should subscribes author on his question' do
+      expect(user.subscriptions.size).to eq 1
+      expect(question.subscriptions.size).to eq 1
+    end
+  end
 end

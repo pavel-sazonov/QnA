@@ -110,17 +110,4 @@ RSpec.describe User do
       expect(user.votes.last.value).to eq 1
     end
   end
-
-  describe '#subscribed?' do
-    let(:another_user) { create :user }
-    let!(:subscription) { create :subscription, user: user, question: question }
-
-    it 'return true if user is subscribed on question' do
-      expect(user).to be_subscribed(question)
-    end
-
-    it 'return false if user is not subscribed on question' do
-      expect(another_user).to_not be_subscribed(question)
-    end
-  end
 end

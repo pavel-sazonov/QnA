@@ -1,7 +1,7 @@
 class SubscriptionMailer < ApplicationMailer
-  def question_subscription(user, question)
-    @question = question
+  def question_subscription(user, answer)
+    @answer = answer
 
-    mail to: user.email, subject: 'New question answers'
+    mail to: user.email, subject: "New answers for #{answer.question.title}"
   end
 end

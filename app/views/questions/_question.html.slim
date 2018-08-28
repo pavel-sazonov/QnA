@@ -1,6 +1,16 @@
 h3= question.title
 p= question.body
 
+-if current_user
+  .subscriptions
+    - if can? :subscribe, question
+      = link_to 'subscribe', question_subscriptions_path(question), method: :post
+
+    - if can? :destroy, @subscription
+      = link_to 'unsubscribe', subscription_path(@subscription), method: :delete
+
+
+
 -if question.attachments.any?
   =render 'shared/attachments_list', resource: question
 

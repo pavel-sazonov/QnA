@@ -24,6 +24,6 @@ class Answer < ApplicationRecord
   private
 
   def send_question_subscription
-    QuestionSubscriptionJob.perform_later(question.user, question)
+    QuestionSubscriptionJob.perform_later(self)
   end
 end

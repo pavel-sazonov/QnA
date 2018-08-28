@@ -1,5 +1,5 @@
 p
-  = 'New answers to the '
-  = link_to "#{@question.title}", question_url(@question)
+  => "New #{@answer.question.title} answer:"
+  = link_to "#{@answer.body.truncate(15)}", answer_url(@answer)
 
 

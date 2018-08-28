@@ -35,8 +35,4 @@ class User < ApplicationRecord
   def vote(resource, value)
     votes.create(votable: resource, value: value)
   end
-
-  def subscribed?(question)
-    subscriptions.where(question: question).any?
-  end
 end
