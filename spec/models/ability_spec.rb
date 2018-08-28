@@ -10,12 +10,6 @@ RSpec.describe Ability do
     it { should_not be_able_to :manage, :all }
   end
 
-  describe 'for admin' do
-    let(:user) { create :user, admin: true }
-
-    it { should be_able_to :manage, :all }
-  end
-
   describe "for user" do
     let(:user) { create :user }
     let(:other) { create :user }
@@ -47,6 +41,7 @@ RSpec.describe Ability do
       let(:answer) { create :answer, question: question, user: user }
       let(:other_answer) { create :answer, question: question, user: other }
       let(:comment) { create :comment, user: user, commentable: question }
+      let(:subscription) { create :subscription, user: user }
       let(:attachment) { create :attachment, attachable: question }
 
       it { should be_able_to %i[update destroy], question, user_id: user.id }
@@ -70,6 +65,18 @@ RSpec.describe Ability do
         it { should be_able_to :cancel_vote, other_question, user_id: user.id }
         it { should_not be_able_to :cancel_vote, question, user_id: user.id }
       end
+    end
+
+    context 'subscription' do
+      let(:question) { create :question }
+      let!(:subscription) { create :subscription, user: user, question: question }
+      let!(:other_subscription) { create :subscription }
+
+      it { should be_able_to :subscribe, Question }
+      it { should_not be_able_to :subscribe, question }
+
+      it { should be_able_to :destroy, subscription }
+      it { should_not be_able_to :destroy, other_subscription }
     end
   end
 end

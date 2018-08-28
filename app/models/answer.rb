@@ -18,4 +18,12 @@ class Answer < ApplicationRecord
       update!(best: true)
     end
   end
+
+  after_create :send_question_subscription
+
+  private
+
+  def send_question_subscription
+    QuestionSubscriptionJob.perform_later(self)
+  end
 end

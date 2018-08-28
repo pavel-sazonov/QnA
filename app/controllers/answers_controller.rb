@@ -1,6 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_answer, only: %i[update destroy set_best]
+  before_action :load_question, only: %i[create publish_answer]
   after_action :publish_answer, only: :create
 
   include Voted
@@ -8,7 +9,6 @@ class AnswersController < ApplicationController
   authorize_resource
 
   def create
-    @question = Question.find(params[:question_id])
     respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
   end
 
@@ -30,6 +30,10 @@ class AnswersController < ApplicationController
 
   def find_answer
     @answer = Answer.find(params[:id])
+  end
+
+  def load_question
+    @question = Question.find(params[:question_id])
   end
 
   def answer_params

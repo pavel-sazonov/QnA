@@ -10,11 +10,12 @@ RSpec.describe User do
   it { should validate_presence_of :password }
 
   let(:author) { create(:user) }
-  let!(:user) { create(:user) }
   let(:question) { create(:question, user: author) }
+  let(:user) { create(:user) }
 
   describe ".find_for_oauth" do
     let(:auth) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456') }
+    let!(:user) { create :user }
 
     context "user has authorization" do
       it "returns the user" do

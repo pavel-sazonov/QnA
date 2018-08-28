@@ -1,0 +1,5 @@
+p
+  => "New #{@answer.question.title} answer:"
+  = link_to "#{@answer.body.truncate(15)}", answer_url(@answer)
+
+

@@ -38,4 +38,19 @@ RSpec.describe Answer, type: :model do
   end
 
   it { should accept_nested_attributes_for :attachments }
+
+  describe '#send_question_subscription' do
+    subject { build :answer }
+
+    it 'should send question subscription after create' do
+      expect(QuestionSubscriptionJob).to receive(:perform_later).with(subject)
+      subject.save!
+    end
+
+    it 'should not send question subscription after update' do
+      subject.save!
+      expect(QuestionSubscriptionJob).to_not receive(:perform_later).with(subject)
+      subject.update body: '12345'
+    end
+  end
 end
