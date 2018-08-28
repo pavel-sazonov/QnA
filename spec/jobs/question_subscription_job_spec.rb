@@ -6,8 +6,8 @@ RSpec.describe QuestionSubscriptionJob, type: :job do
   let!(:subscriptions) { create_list :subscription, 2, question: question }
 
   it 'sends question subscription' do
-    answer.question.subscriptions.each do |subscription|
-      expect(SubscriptionMailer).to receive(:question_subscription).with(subscription.user, answer)
+    question.subscribers.each do |subscriber|
+      expect(SubscriptionMailer).to receive(:question_subscription).with(subscriber, answer)
     end
 
     QuestionSubscriptionJob.perform_now(answer)
