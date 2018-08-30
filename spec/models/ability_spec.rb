@@ -7,6 +7,7 @@ RSpec.describe Ability do
     let(:user) { nil }
 
     it { should be_able_to :read, :all }
+    it { should be_able_to :do, :search }
     it { should_not be_able_to :manage, :all }
   end
 

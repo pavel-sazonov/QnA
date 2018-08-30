@@ -3,6 +3,7 @@ class Ability
 
   def initialize(user)
     can :read, :all
+    can :do, :search
 
     return unless user.present?
     can :me, User

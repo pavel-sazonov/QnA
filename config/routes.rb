@@ -31,6 +31,10 @@ Rails.application.routes.draw do
 
   resources :attachments, only: :destroy
 
+  resource :search, only: :show do
+    get :result, on: :member
+  end
+
   namespace :api do
     namespace :v1 do
       resources :profiles, only: :index do
