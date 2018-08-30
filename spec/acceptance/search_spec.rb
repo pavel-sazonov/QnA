@@ -4,52 +4,41 @@ feature 'Search', %q(
   As an user
   I want to be able to search resources
 ) do
-  given!(:question) { create :question, title: 'search-test' }
-  given!(:answer) { create :answer, body: 'search-test' }
+  given!(:user) { create :user, email: 'search-user@test.com' }
+  given!(:question) { create :question, title: 'search-question' }
+  given!(:answer) { create :answer, body: 'search-answer' }
 
-  scenario 'user searches in questions', js: true do
+  scenario 'user searches', js: true do
     ThinkingSphinx::Test.run do
       visit search_path
-      fill_in 'q', with: 'search-test'
+      fill_in 'q', with: 'search-question'
       select 'Question', from: 'model'
       click_button 'Search'
 
-      within '.results' do
-        expect(page).to have_content 'Question'
-        expect(page).to have_content question.id
-        expect(page).to_not have_content 'Answer'
-      end
-    end
-  end
+      expect(page).to have_link question.title
+      expect(page).to_not have_content answer.body
 
-  scenario 'user searches in answers', js: true do
-    ThinkingSphinx::Test.run do
-      visit search_path
-      fill_in 'q', with: 'search-test'
+      fill_in 'q', with: 'search-answer'
       select 'Answer', from: 'model'
       click_button 'Search'
 
-      within '.results' do
-        expect(page).to_not have_content 'Question'
-        expect(page).to have_content 'Answer'
-        expect(page).to have_content answer.id
-      end
-    end
-  end
+      expect(page).to_not have_link question.title
+      expect(page).to have_content answer.body
 
-  scenario 'user searches everywhere', js: true do
-    ThinkingSphinx::Test.run do
-      visit search_path
-      fill_in 'q', with: 'search-test'
+      fill_in 'q', with: 'search-user'
+      select 'User', from: 'model'
+      click_button 'Search'
+
+      expect(page).to_not have_link question.title
+      expect(page).to have_content user.email
+
+      fill_in 'q', with: 'search'
       select 'Everywhere', from: 'model'
       click_button 'Search'
 
-      within '.results' do
-        expect(page).to have_content 'Question'
-        expect(page).to have_content question.id
-        expect(page).to have_content 'Answer'
-        expect(page).to have_content answer.id
-      end
+      expect(page).to have_link question.title
+      expect(page).to have_content user.email
+      expect(page).to have_content answer.body
     end
   end
 end
