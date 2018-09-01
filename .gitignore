@@ -27,6 +27,9 @@
 /config/master.key
 
 config/database.yml
+config/thinking_sphinx.yml
+config/cable.yml
+config/storage.yml
 
 /dump.rdb
 
