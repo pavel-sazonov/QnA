@@ -56,6 +56,7 @@ gem 'skim'
 gem 'slim-rails'
 gem 'therubyracer'
 gem 'thinking-sphinx'
+gem 'unicorn'
 gem 'whenever'
 
 group :production do
@@ -64,6 +65,7 @@ group :production do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-sidekiq', require: false
+  gem 'capistrano3-unicorn', require: false
 end
 
 group :development, :test do
