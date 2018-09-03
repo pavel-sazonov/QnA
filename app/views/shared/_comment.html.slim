@@ -1,6 +1,6 @@
 .comment id="comment-#{comment.id}"
-  p
-  =>comment.body
+  - cache comment do
+    p=> comment.body
 
   -if can? :destroy, comment
     =link_to 'delete',

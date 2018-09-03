@@ -1,6 +1,7 @@
 .questions-list
-  - @questions.each do |question|
-    =render 'question_for_index', question: question
+  - cache collection_cache_key_for :question do
+    - @questions.each do |question|
+      =render 'question_for_index', question: question
 -if can?(:create, Question)
   p= link_to 'Ask question', new_question_path
 - else

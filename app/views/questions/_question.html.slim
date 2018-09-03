@@ -1,49 +1,41 @@
-h3= question.title
-p= question.body
-
--if current_user
-  .subscriptions
-    - if can? :subscribe, question
-      = link_to 'subscribe', question_subscriptions_path(question), method: :post
-
-    - if can? :destroy, @subscription
-      = link_to 'unsubscribe', subscription_path(@subscription), method: :delete
-
-
+- cache question do
+  h3= question.title
+  p= question.body
 
 -if question.attachments.any?
   =render 'shared/attachments_list', resource: question
 
-.question-vote
-  => "Rating: "
+- cache question.rating do
+  .question-vote
+      => "Rating: "
 
-  span.question-rating
-    => question.rating
+      span.question-rating
+        => question.rating
 
-  .question-vote-links  id="question-vote-links-#{question.id}"
-    -if can? :vote_up, question
-      => link_to '+',
-                 vote_up_question_path,
-                 class: 'vote-up-link',
-                 method: :post,
-                 remote: true,
-                 data: { type: :json }
+.question-vote-links  id="question-vote-links-#{question.id}"
+  -if can? :vote_up, question
+    => link_to '+',
+               vote_up_question_path,
+               class: 'vote-up-link',
+               method: :post,
+               remote: true,
+               data: { type: :json }
 
-    - if can? :vote_down, question
-      => link_to '-',
-                vote_down_question_path,
-                class: 'vote-down-link',
-                method: :post,
-                remote: true,
-                data: { type: :json }
+  - if can? :vote_down, question
+    => link_to '-',
+              vote_down_question_path,
+              class: 'vote-down-link',
+              method: :post,
+              remote: true,
+              data: { type: :json }
 
-    - if can? :cancel_vote, question
-      = link_to 'cancel vote',
-                cancel_vote_question_path,
-                class: 'vote-cancel-link',
-                method: :delete,
-                remote: :true,
-                data: { type: :json }
+  - if can? :cancel_vote, question
+    = link_to 'cancel vote',
+              cancel_vote_question_path,
+              class: 'vote-cancel-link',
+              method: :delete,
+              remote: :true,
+              data: { type: :json }
 
 => link_to('Edit', '', class: 'edit-question-link') if can? :update, question
 = link_to('Delete', question_path(question), method: :delete) if can? :destroy, question

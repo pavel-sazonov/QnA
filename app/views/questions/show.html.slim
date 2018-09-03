@@ -19,3 +19,11 @@
 - else
   p You must #{link_to('Login', new_user_session_path)}
     or #{link_to('Register', new_user_session_path)} to answer the question.
+
+-if current_user
+  .subscriptions
+    - if can? :subscribe, @question
+      = link_to 'subscribe', question_subscriptions_path(@question), method: :post
+
+    - if can? :destroy, @subscription
+      = link_to 'unsubscribe', subscription_path(@subscription), method: :delete
