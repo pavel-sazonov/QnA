@@ -1,15 +1,16 @@
 - if answer.persisted?
-  div id="answer-#{answer.id}" class="answer"
-    - if answer.best?
-      .best-answer
-        b= 'The best answer'
+    div id="answer-#{answer.id}" class="answer"
+      - cache answer do
+        - if answer.best?
+          .best-answer
+            b= 'The best answer'
 
-    .answer-body =answer.body
+        .answer-body =answer.body
 
-    .answer-vote
-      => "Rating: "
-      span.answer-rating id="answer-rating-#{answer.id}"
-        => answer.rating
+        .answer-vote
+          => "Rating: "
+          span.answer-rating id="answer-rating-#{answer.id}"
+            => answer.rating
 
       .answer-vote-links  id="answer-vote-links-#{answer.id}"
         -if can? :vote_up, answer
@@ -37,41 +38,41 @@
                     remote: :true,
                     data: { type: :json }
 
-    .answer-links
-      - if can?(:set_best, answer) && !answer.best?
-        => link_to 'Best',
-                    set_best_answer_path(answer),
-                    class: 'best-answer-link',
-                    method: :patch,
+      .answer-links
+        - if can?(:set_best, answer) && !answer.best?
+          => link_to 'Best',
+                      set_best_answer_path(answer),
+                      class: 'best-answer-link',
+                      method: :patch,
+                      remote: true
+
+        -if can? :update, answer
+          => link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+
+        -if can? :destroy, answer
+          = link_to 'Delete',
+                    answer_path(answer),
+                    class: 'delete-answer-link',
+                    method: :delete,
                     remote: true
 
-      -if can? :update, answer
-        => link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+        p
+          = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
+            = f.label :body_edit, 'Answer'
+            br
+            = f.text_area :body, id: 'answer_body_edit'
+            br
+            = f.submit 'Save'
+            = link_to 'cancel', '', class: 'cancel-edit', data: { answer_id: answer.id }
 
-      -if can? :destroy, answer
-        = link_to 'Delete',
-                  answer_path(answer),
-                  class: 'delete-answer-link',
-                  method: :delete,
-                  remote: true
+      .attachments
+        =render 'shared/attachments_list', resource: answer
 
-      p
-        = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
-          = f.label :body_edit, 'Answer'
-          br
-          = f.text_area :body, id: 'answer_body_edit'
-          br
-          = f.submit 'Save'
-          = link_to 'cancel', '', class: 'cancel-edit', data: { answer_id: answer.id }
+      .answer-comments id="comments-answer-#{answer.id}"
+        -if answer.comments.any?
+          -answer.comments.each do |comment|
+            =render 'shared/comment', comment: comment
 
-    .attachments
-      =render 'shared/attachments_list', resource: answer
-
-    .answer-comments id="comments-answer-#{answer.id}"
-      -if answer.comments.any?
-        -answer.comments.each do |comment|
-          =render 'shared/comment', comment: comment
-
-    .new-comment
-      -if current_user
-        =render 'shared/comment_form', commentable: answer
+      .new-comment
+        -if current_user
+          =render 'shared/comment_form', commentable: answer

@@ -49,6 +49,7 @@ gem 'oj_mimic_json'
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'omniauth-vkontakte'
+gem 'redis-rails'
 gem 'responders'
 gem 'sidekiq'
 gem 'sinatra', require: nil
